@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Build-time Data Flow",
+    "output": "docs/architecture/build-data.html",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
+      "link_mode": "local-only",
+      "revision": "851b0be1d7d7adff53be04d5c2eebc582035d6a9"
+    },
+    "viewBox": [
+      1080,
+      520
+    ],
+    "legend": {
+      "entries": {
+        "dashed": {
+          "label": "only when tags exist"
+        }
+      }
+    }
+  },
+  "stages": [
+    {
+      "label": "Read git"
+    },
+    {
+      "label": "Parse"
+    },
+    {
+      "label": "Build"
+    },
+    {
+      "label": "Write"
+    },
+    {
+      "label": "Show"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gitLog",
+      "type": "external",
+      "label": "git log",
+      "sublabel": "--raw -M --no-merges",
+      "stage": 0,
+      "row": 0,
+      "sources": [
+        {
+          "path": "src/node/collect.ts",
+          "line": 41,
+          "end_line": 53
+        }
+      ]
+    },
+    {
+      "id": "catFile",
+      "type": "external",
+      "label": "git cat-file",
+      "sublabel": "--batch",
+      "stage": 0,
+      "row": 1,
+      "sources": [
+        {
+          "path": "src/node/git.ts",
+          "line": 25,
+          "end_line": 46
+        }
+      ]
+    },
+    {
+      "id": "lsTree",
+      "type": "external",
+      "label": "git ls-tree",
+      "sublabel": "one per tag",
+      "stage": 0,
+      "row": 2,
+      "sources": [
+        {
+          "path": "src/node/collect.ts",
+          "line": 85,
+          "end_line": 121
+        }
+      ]
+    },
+    {
+      "id": "parse",
+      "type": "backend",
+      "label": "parseLog",
+      "sublabel": "commits and changes",
+      "stage": 1,
+      "row": 0,
+      "sources": [
+        {
+          "path": "src/node/log.ts",
+          "line": 32,
+          "end_line": 54
+        }
+      ]
+    },
+    {
+      "id": "histories",
+      "type": "backend",
+      "label": "buildHistories",
+      "sublabel": "follows renames",
+      "stage": 2,
+      "row": 0,
+      "sources": [
+        {
+          "path": "src/node/history.ts",
+          "line": 19,
+          "end_line": 61
+        }
+      ]
+    },
+    {
+      "id": "build",
+      "type": "backend",
+      "label": "buildSiteData",
+      "sublabel": "filters and subjects",
+      "stage": 2,
+      "row": 1,
+      "sources": [
+        {
+          "path": "src/node/data.ts",
+          "line": 60,
+          "end_line": 98,
+          "label": "buildSiteData"
+        },
+        {
+          "path": "src/node/data.ts",
+          "line": 184,
+          "end_line": 212,
+          "label": "hidden reasons"
+        },
+        {
+          "path": "src/node/message.ts",
+          "line": 3,
+          "end_line": 27,
+          "label": "subject processing"
+        }
+      ]
+    },
+    {
+      "id": "pageDiff",
+      "type": "frontend",
+      "label": "On-page diff",
+      "sublabel": "?diff=",
+      "stage": 4,
+      "row": 0,
+      "sources": [
+        {
+          "path": "src/runtime/PageDiff.tsx",
+          "line": 30,
+          "end_line": 72
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "type": "frontend",
+      "label": "Recent changes",
+      "sublabel": "/changes",
+      "stage": 4,
+      "row": 1,
+      "sources": [
+        {
+          "path": "src/runtime/GitDiffLog.tsx",
+          "line": 19,
+          "end_line": 41
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "type": "database",
+      "label": "git-diff-data/",
+      "sublabel": "pages, log, blobs",
+      "stage": 3,
+      "row": 1,
+      "sources": [
+        {
+          "path": "src/runtime/paths.ts",
+          "line": 1,
+          "end_line": 23,
+          "label": "data paths"
+        },
+        {
+          "path": "src/runtime/types.ts",
+          "line": 1,
+          "end_line": 57,
+          "label": "data shapes"
+        },
+        {
+          "path": "src/node/collect.ts",
+          "line": 73,
+          "end_line": 82,
+          "label": "writes the files"
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "raw-log",
+      "from": "gitLog",
+      "to": "parse",
+      "label": "raw output",
+      "variant": "emphasis"
+    },
+    {
+      "id": "commits",
+      "from": "parse",
+      "to": "histories",
+      "label": "commits"
+    },
+    {
+      "id": "file-histories",
+      "from": "histories",
+      "to": "build",
+      "label": "file histories",
+      "variant": "emphasis",
+      "labelAt": [
+        530,
+        201
+      ]
+    },
+    {
+      "id": "contents",
+      "from": "catFile",
+      "to": "build",
+      "label": "blob contents"
+    },
+    {
+      "id": "tag-trees",
+      "from": "lsTree",
+      "to": "build",
+      "label": "tag blobs",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          530,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "write-files",
+      "from": "build",
+      "to": "files",
+      "label": "JSON and blobs",
+      "variant": "emphasis"
+    },
+    {
+      "id": "page-read",
+      "from": "files",
+      "to": "pageDiff",
+      "label": "page index, blobs",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          745,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "log-read",
+      "from": "files",
+      "to": "changes",
+      "label": "log, blobs"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Read once",
+      "items": [
+        "One git log over the docs root replaces a git log --follow per page",
+        "One cat-file process reads every blob the build needs"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Left out of the lists",
+      "items": [
+        "Added files, such as directories copied for a new version",
+        "Renames that keep the content and edits that only move whitespace"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Published",
+      "items": [
+        "Subjects are written after issue references are stripped by default",
+        "The on-page diff also reads blobs/*.txt for the compared versions"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+[
+  { "type": "file", "name": "index", "label": "ホーム" },
+  { "type": "dir", "name": "guide", "label": "ガイド", "collapsible": true },
+  "architecture"
+]

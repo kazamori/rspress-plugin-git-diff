@@ -1,0 +1,5 @@
+[
+  { "text": "Guide", "link": "/guide/getting-started" },
+  { "text": "Architecture", "link": "/architecture" },
+  { "text": "Recent changes", "link": "/changes" }
+]

@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "rspress-plugin-git-diff System Overview",
+    "output": "docs/architecture/system-overview.html",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
+      "link_mode": "local-only",
+      "revision": "851b0be1d7d7adff53be04d5c2eebc582035d6a9"
+    }
+  },
+  "components": [
+    {
+      "id": "rspress",
+      "type": "backend",
+      "label": "Rspress v2 build",
+      "sublabel": "calls the plugin hooks",
+      "pos": [
+        40,
+        80
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/node/index.ts",
+          "line": 19,
+          "end_line": 75,
+          "label": "pluginGitDiff hooks"
+        }
+      ]
+    },
+    {
+      "id": "sourceLines",
+      "type": "backend",
+      "label": "Source line marking",
+      "sublabel": "remark and rehype plugins",
+      "pos": [
+        380,
+        80
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/node/sourceLines.ts",
+          "line": 46,
+          "end_line": 98,
+          "label": "remarkCodeLines, rehypeSourceLines"
+        },
+        {
+          "path": "src/node/index.ts",
+          "line": 31,
+          "end_line": 34,
+          "label": "registered under markdown"
+        }
+      ]
+    },
+    {
+      "id": "git",
+      "type": "database",
+      "label": "Git repository",
+      "sublabel": "history of the docs",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/node/collect.ts",
+          "line": 36,
+          "end_line": 53,
+          "label": "git log call"
+        }
+      ]
+    },
+    {
+      "id": "collector",
+      "type": "backend",
+      "label": "History collector",
+      "sublabel": "collect.ts and data.ts",
+      "pos": [
+        380,
+        280
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/node/collect.ts",
+          "line": 23,
+          "end_line": 83,
+          "label": "collectGitData"
+        },
+        {
+          "path": "src/node/data.ts",
+          "line": 60,
+          "end_line": 98,
+          "label": "buildSiteData"
+        }
+      ]
+    },
+    {
+      "id": "html",
+      "type": "frontend",
+      "label": "Page HTML",
+      "sublabel": "line and route attributes",
+      "pos": [
+        740,
+        80
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/runtime/attributes.ts",
+          "line": 1,
+          "end_line": 16,
+          "label": "data-git-diff-* attributes"
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "type": "database",
+      "label": "git-diff-data/",
+      "sublabel": "page index, log, blobs",
+      "pos": [
+        740,
+        280
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/runtime/paths.ts",
+          "line": 1,
+          "end_line": 23,
+          "label": "data paths"
+        },
+        {
+          "path": "src/node/collect.ts",
+          "line": 76,
+          "end_line": 82,
+          "label": "writes the files"
+        },
+        {
+          "path": "src/node/index.ts",
+          "line": 35,
+          "end_line": 39,
+          "label": "copied into the output"
+        }
+      ]
+    },
+    {
+      "id": "pageDiff",
+      "type": "frontend",
+      "label": "On-page diff",
+      "sublabel": "PageDiff and marks",
+      "pos": [
+        1050,
+        80
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/runtime/PageDiff.tsx",
+          "line": 20,
+          "end_line": 72,
+          "label": "?diff= entry"
+        },
+        {
+          "path": "src/runtime/usePageAnnotation.ts",
+          "line": 11,
+          "end_line": 36,
+          "label": "marking control"
+        },
+        {
+          "path": "src/runtime/annotate.ts",
+          "line": 41,
+          "end_line": 93,
+          "label": "annotatePage"
+        }
+      ]
+    },
+    {
+      "id": "changesPage",
+      "type": "frontend",
+      "label": "Recent changes page",
+      "sublabel": "added by addPages",
+      "pos": [
+        1050,
+        280
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "src/runtime/GitDiffLog.tsx",
+          "line": 19,
+          "end_line": 41,
+          "label": "GitDiffLog"
+        },
+        {
+          "path": "src/node/index.ts",
+          "line": 45,
+          "end_line": 51,
+          "label": "addPages"
+        }
+      ]
+    },
+    {
+      "id": "reader",
+      "type": "external",
+      "label": "Reader",
+      "sublabel": "browser",
+      "pos": [
+        1390,
+        180
+      ],
+      "size": [
+        150,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Build time (Node.js)",
+      "wraps": [
+        "rspress",
+        "sourceLines",
+        "git",
+        "collector"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Static site output",
+      "wraps": [
+        "html",
+        "files"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Browser",
+      "wraps": [
+        "pageDiff",
+        "changesPage"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "compile-markdown",
+      "from": "rspress",
+      "to": "sourceLines",
+      "label": "compile Markdown"
+    },
+    {
+      "id": "before-build",
+      "from": "rspress",
+      "to": "collector",
+      "label": "beforeBuild",
+      "variant": "emphasis"
+    },
+    {
+      "id": "read-history",
+      "from": "git",
+      "to": "collector",
+      "label": "git log / cat-file",
+      "variant": "emphasis"
+    },
+    {
+      "id": "line-attributes",
+      "from": "sourceLines",
+      "to": "html",
+      "label": "line attributes"
+    },
+    {
+      "id": "write-data",
+      "from": "collector",
+      "to": "files",
+      "label": "write JSON and blobs",
+      "variant": "emphasis"
+    },
+    {
+      "id": "find-blocks",
+      "from": "html",
+      "to": "pageDiff",
+      "label": "blocks to mark"
+    },
+    {
+      "id": "page-data",
+      "from": "files",
+      "to": "pageDiff",
+      "label": "index and blobs"
+    },
+    {
+      "id": "log-data",
+      "from": "files",
+      "to": "changesPage",
+      "label": "log and blobs"
+    },
+    {
+      "id": "open-diff",
+      "from": "reader",
+      "to": "pageDiff",
+      "label": "open with ?diff=",
+      "variant": "emphasis"
+    },
+    {
+      "id": "open-changes",
+      "from": "reader",
+      "to": "changesPage",
+      "label": "open /changes"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Build time",
+      "items": [
+        "beforeBuild reads the history with git log, cat-file and ls-tree",
+        "Added files, unchanged renames and whitespace-only edits are left out of the lists",
+        "While Markdown compiles, rendered blocks get their source lines and page route"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Browser",
+      "items": [
+        "The diff and marking modules load only when the URL has ?diff=",
+        "Marks go on the version the page shows; removed lines appear in place as source",
+        "The recent changes page lists the page diffs of each commit"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "What gets published",
+      "items": [
+        "git-diff-data/ becomes static files that anyone can fetch",
+        "Only the processed subject line of a commit message is written",
+        "Versions older than the since option are not written"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# Architecture
+
+import { withBase } from '@rspress/core/runtime';
+
+The plugin has two halves.
+At build time, it reads the git history and writes it as static files, and marks the rendered pages with their source lines.
+In the browser, it reads those files to show the on-page diff and the recent changes page.
+
+Each diagram links to an interactive version, where you can search the components and follow the source references.
+
+## System overview
+
+![System overview](/architecture/system-overview.png)
+
+<a href={withBase("/architecture/system-overview.html")} target="_blank" rel="noreferrer">Open the interactive diagram</a>
+
+## Showing a change on the page
+
+What happens after a reader opens a page with `?diff=`.
+
+![Showing a change on the page](/architecture/on-page-diff.png)
+
+<a href={withBase("/architecture/on-page-diff.html")} target="_blank" rel="noreferrer">Open the interactive diagram</a>
+
+## Build-time data flow
+
+How the git history becomes the files under `git-diff-data/`.
+
+![Build-time data flow](/architecture/build-data.png)
+
+<a href={withBase("/architecture/build-data.html")} target="_blank" rel="noreferrer">Open the interactive diagram</a>

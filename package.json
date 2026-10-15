@@ -1,0 +1,65 @@
+{
+  "name": "@kazamori/rspress-plugin-git-diff",
+  "version": "0.1.0",
+  "description": "Rspress plugin that shows git history and diffs of pages",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazamori/rspress-plugin-git-diff.git"
+  },
+  "keywords": [
+    "rspress",
+    "rspress-plugin",
+    "git",
+    "diff",
+    "changelog"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/node/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/types/node/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "test": "rstest run",
+    "typecheck": "tsc --noEmit",
+    "docs:dev": "bun run build && rspress dev",
+    "docs:build": "bun run build && rspress build",
+    "docs:preview": "rspress preview",
+    "example:setup": "bun example/scripts/create-repo.ts",
+    "example:dev": "bun run build && rspress dev --config example/rspress.config.ts",
+    "example:build": "bun run build && rspress build --config example/rspress.config.ts",
+    "example:preview": "rspress preview --config example/rspress.config.ts",
+    "prepublishOnly": "bun run typecheck && bun run test && bun run build"
+  },
+  "peerDependencies": {
+    "@rspress/core": "^2.0.0"
+  },
+  "devDependencies": {
+    "@rsbuild/plugin-react": "^2.1.1",
+    "@rslib/core": "^1.0.3",
+    "@rspress/core": "^2.0.23",
+    "@rstest/core": "^0.12.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "happy-dom": "^21.0.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "diff": "^9.0.0",
+    "diff2html": "^3.4.56"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
