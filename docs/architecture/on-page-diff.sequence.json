@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Showing a Change on the Page (?diff=)",
+    "output": "docs/architecture/on-page-diff.html",
+    "locale": "en",
+    "viewBox": [
+      1080,
+      660
+    ],
+    "column_fit": "spread",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
+      "link_mode": "local-only",
+      "revision": "decedab24639758cd0a1abaf904b6a52b8b7e0b5"
+    },
+    "legend": {
+      "entries": {
+        "dashed": {
+          "label": "reader input"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "reader",
+      "type": "external",
+      "label": "Reader",
+      "sublabel": "browser"
+    },
+    {
+      "id": "pageDiff",
+      "type": "frontend",
+      "label": "PageDiff",
+      "sublabel": "global component",
+      "sources": [
+        {
+          "path": "src/runtime/PageDiff.tsx",
+          "line": 20,
+          "end_line": 72,
+          "label": "reads ?diff="
+        },
+        {
+          "path": "src/runtime/usePageAnnotation.ts",
+          "line": 11,
+          "end_line": 54,
+          "label": "loads, waits, marks"
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "type": "database",
+      "label": "_git-diff/",
+      "sublabel": "static files",
+      "sources": [
+        {
+          "path": "src/runtime/fetch.ts",
+          "line": 33,
+          "end_line": 48,
+          "label": "loadPageIndex, loadBlob"
+        }
+      ]
+    },
+    {
+      "id": "resolve",
+      "type": "backend",
+      "label": "resolveDiffQuery",
+      "sublabel": "rev or range",
+      "sources": [
+        {
+          "path": "src/runtime/resolve.ts",
+          "line": 31,
+          "end_line": 56
+        }
+      ]
+    },
+    {
+      "id": "lineMap",
+      "type": "backend",
+      "label": "markChanges",
+      "sublabel": "line mapping",
+      "sources": [
+        {
+          "path": "src/runtime/lineMap.ts",
+          "line": 54,
+          "end_line": 78
+        }
+      ]
+    },
+    {
+      "id": "annotate",
+      "type": "backend",
+      "label": "annotatePage",
+      "sublabel": "marks on the DOM",
+      "sources": [
+        {
+          "path": "src/runtime/annotate.ts",
+          "line": 41,
+          "end_line": 93
+        }
+      ]
+    },
+    {
+      "id": "dom",
+      "type": "frontend",
+      "label": "Page DOM",
+      "sublabel": "rendered blocks",
+      "sources": [
+        {
+          "path": "src/runtime/attributes.ts",
+          "line": 1,
+          "end_line": 16,
+          "label": "line and route attributes"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 285,
+      "label": "Resolve"
+    },
+    {
+      "from": 291,
+      "to": 397,
+      "label": "Map lines"
+    },
+    {
+      "from": 403,
+      "to": 509,
+      "label": "Mark"
+    },
+    {
+      "from": 515,
+      "to": 545,
+      "label": "Navigate"
+    }
+  ],
+  "messages": [
+    {
+      "id": "open",
+      "from": "reader",
+      "to": "pageDiff",
+      "y": 165,
+      "label": "open ?diff=v1.0..",
+      "variant": "emphasis"
+    },
+    {
+      "id": "fetch-index",
+      "from": "pageDiff",
+      "to": "data",
+      "y": 193,
+      "label": "fetch the page index"
+    },
+    {
+      "id": "index",
+      "from": "data",
+      "to": "pageDiff",
+      "y": 221,
+      "label": "revisions and tags",
+      "variant": "return"
+    },
+    {
+      "id": "resolve-query",
+      "from": "pageDiff",
+      "to": "resolve",
+      "y": 249,
+      "label": "resolve the query"
+    },
+    {
+      "id": "target",
+      "from": "resolve",
+      "to": "pageDiff",
+      "y": 277,
+      "label": "from and to blobs",
+      "variant": "return"
+    },
+    {
+      "id": "fetch-blobs",
+      "from": "pageDiff",
+      "to": "data",
+      "y": 305,
+      "label": "fetch from, to, current"
+    },
+    {
+      "id": "sources",
+      "from": "data",
+      "to": "pageDiff",
+      "y": 333,
+      "label": "page sources",
+      "variant": "return"
+    },
+    {
+      "id": "map",
+      "from": "pageDiff",
+      "to": "lineMap",
+      "y": 361,
+      "label": "map to current lines",
+      "note": "loaded on demand"
+    },
+    {
+      "id": "marks",
+      "from": "lineMap",
+      "to": "pageDiff",
+      "y": 389,
+      "label": "added, later, deletions",
+      "variant": "return"
+    },
+    {
+      "id": "annotate-call",
+      "from": "pageDiff",
+      "to": "annotate",
+      "y": 417,
+      "label": "mark the changes",
+      "note": "after this page's blocks render"
+    },
+    {
+      "id": "mark",
+      "from": "annotate",
+      "to": "dom",
+      "y": 445,
+      "label": "mark, insert removed lines",
+      "variant": "emphasis"
+    },
+    {
+      "id": "stops",
+      "from": "annotate",
+      "to": "pageDiff",
+      "y": 473,
+      "label": "stops to visit",
+      "variant": "return"
+    },
+    {
+      "id": "bar",
+      "from": "pageDiff",
+      "to": "reader",
+      "y": 501,
+      "label": "bar with legend",
+      "variant": "return"
+    },
+    {
+      "id": "keys",
+      "from": "reader",
+      "to": "pageDiff",
+      "y": 529,
+      "label": "n / p keys move the focus",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "pageDiff",
+      "from": 165,
+      "to": 535,
+      "type": "frontend"
+    },
+    {
+      "participant": "data",
+      "from": 188,
+      "to": 226,
+      "type": "database"
+    },
+    {
+      "participant": "resolve",
+      "from": 244,
+      "to": 282,
+      "type": "backend"
+    },
+    {
+      "participant": "data",
+      "from": 300,
+      "to": 338,
+      "type": "database"
+    },
+    {
+      "participant": "lineMap",
+      "from": 356,
+      "to": 394,
+      "type": "backend"
+    },
+    {
+      "participant": "annotate",
+      "from": 412,
+      "to": 478,
+      "type": "backend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Resolve",
+      "items": [
+        "A commit hash must be one that changed the page; a tag can name any point",
+        "A single revision compares the page before and after that commit"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Map and mark",
+      "items": [
+        "The page shows the latest version, so older changes are followed to it",
+        "Lines rewritten after the change are marked as changed again later",
+        "Marking waits until blocks carrying this page's route are rendered"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Navigate",
+      "items": [
+        "Touching deletions and additions count as one stop",
+        "Moving scrolls the stop to the center and outlines it",
+        "The source diff panel opens from the bar"
+      ]
+    }
+  ]
+}
