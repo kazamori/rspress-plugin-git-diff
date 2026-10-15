@@ -1,0 +1,30 @@
+# アーキテクチャ
+
+このプラグインは 2 つの部分からなる。
+ビルド時には、git の履歴を読み出して静的なファイルに書き出し、描画するページの要素にソースの行番号を付ける。
+ブラウザでは、そのファイルを読み、ページ上の差分と最近の変更のページを表示する。
+
+各図には操作できる版へのリンクがあり、コンポーネントの検索や、ソースの参照をたどれる。
+図の文言は英語である。
+
+## システム構成
+
+![System overview](/architecture/system-overview.png)
+
+<a href="/architecture/system-overview.html" target="_blank" rel="noreferrer">操作できる図を開く</a>
+
+## ページ上の差分の処理
+
+読み手が `?diff=` 付きのページを開いてから、印が付くまでの流れである。
+
+![Showing a change on the page](/architecture/on-page-diff.png)
+
+<a href="/architecture/on-page-diff.html" target="_blank" rel="noreferrer">操作できる図を開く</a>
+
+## ビルド時のデータの流れ
+
+git の履歴が `_git-diff/` 配下のファイルになるまでの流れである。
+
+![Build-time data flow](/architecture/build-data.png)
+
+<a href="/architecture/build-data.html" target="_blank" rel="noreferrer">操作できる図を開く</a>

@@ -1,0 +1,5 @@
+[
+  { "type": "file", "name": "index", "label": "Home" },
+  { "type": "dir", "name": "guide", "label": "Guide", "collapsible": true },
+  "architecture"
+]

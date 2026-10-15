@@ -1,0 +1,5 @@
+[
+  { "text": "ガイド", "link": "/guide/getting-started" },
+  { "text": "アーキテクチャ", "link": "/architecture" },
+  { "text": "最近の変更", "link": "/changes" }
+]

@@ -1,0 +1,38 @@
+# Recent changes
+
+The plugin adds a page at `/changes` that lists recent commits, newest first, like `git log -p`.
+Readers who do not open a given page can still notice small edits to it here.
+
+## What each entry shows
+
+Each commit is a card.
+Its header shows the date and time in the commit's own time zone, the subject, the short hash and, if enabled, the author.
+
+Below the header, each changed page has:
+
+- its title, linked to the page,
+- a "Show on page" link that opens the page with `?diff=<hash>`,
+- the diff of its Markdown source, unified or side by side.
+
+Diffs load when they scroll into view.
+A diff with more changed lines than [`maxDiffLines`](./options) is collapsed until the reader expands it, and can be collapsed again.
+
+A deleted page is listed with its last title and no link.
+Changed images, such as PNG or SVG files, are listed without a diff.
+
+## Changes left out
+
+These changes do not appear in the list, because they tell readers nothing new.
+
+- **Added files.** With `multiVersion`, a new version usually starts as a copy of a directory; the copy would show every line as added.
+- **Renames that keep the content.**
+- **Edits that only move whitespace or line breaks**, such as rewrapping a paragraph.
+
+A range in the [on-page diff](./on-page-diff) still includes them.
+
+## Versions and languages
+
+With `multiVersion` or `locales`, each version and language gets its own page, such as `/changes`, `/ja/changes` and `/v1/ja/changes`.
+Each lists only the changes under its own directory, so a fix copied to several versions does not appear several times on one page.
+
+The page lists up to [`maxCommits`](./options) commits.
