@@ -14,7 +14,7 @@
     "repository": {
       "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
       "link_mode": "local-only",
-      "revision": "decedab24639758cd0a1abaf904b6a52b8b7e0b5"
+      "revision": "851b0be1d7d7adff53be04d5c2eebc582035d6a9"
     },
     "legend": {
       "entries": {
@@ -54,7 +54,7 @@
     {
       "id": "data",
       "type": "database",
-      "label": "_git-diff/",
+      "label": "git-diff-data/",
       "sublabel": "static files",
       "sources": [
         {

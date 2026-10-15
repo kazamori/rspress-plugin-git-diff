@@ -9,7 +9,7 @@
     "repository": {
       "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
       "link_mode": "local-only",
-      "revision": "decedab24639758cd0a1abaf904b6a52b8b7e0b5"
+      "revision": "851b0be1d7d7adff53be04d5c2eebc582035d6a9"
     },
     "viewBox": [
       1080,
@@ -177,7 +177,7 @@
     {
       "id": "files",
       "type": "database",
-      "label": "_git-diff/",
+      "label": "git-diff-data/",
       "sublabel": "pages, log, blobs",
       "stage": 3,
       "row": 1,
@@ -185,7 +185,7 @@
         {
           "path": "src/runtime/paths.ts",
           "line": 1,
-          "end_line": 19,
+          "end_line": 23,
           "label": "data paths"
         },
         {
