@@ -6,7 +6,7 @@ README.md and the documentation site (`docs/`) describe what the plugin does and
 ## Overview
 
 `@kazamori/rspress-plugin-git-diff` is an Rspress v2 plugin that shows the git history and diffs of documentation pages.
-At build time it reads the git history and writes static JSON and page sources under `_git-diff/`.
+At build time it reads the git history and writes static JSON and page sources under `git-diff-data/`.
 In the browser, it fetches those files to show the on-page diff, the source diff and the recent changes page.
 
 ## Commands
@@ -128,6 +128,7 @@ Still, do not write tests or scripts that depend on hash values; look commits up
 - **Browser language in headless checks**: Rspress redirects to the page in the browser's language. To check English pages, set the browser language to English (with Playwright, `newContext({ locale: 'en-US' })`).
 - **Line numbers and front matter**: Rspress replaces front matter with blank lines before compiling, so the line numbers on elements match the source file. The on-page marks rely on this.
 - **Line numbers of code blocks**: syntax highlighting rebuilds `pre`, and the position is gone by the rehype stage. The remark plugin wraps code blocks in an element that keeps their lines.
+- **Directory names starting with an underscore**: hosts that run Jekyll, such as GitHub Pages published from a branch, drop them from the site. For this reason, the data directory was renamed from `_git-diff/` to `git-diff-data/`; keep output names free of a leading underscore.
 - **Stopping the preview server**: `pkill -f "rspress preview"` chained with other commands in one shell matches that shell too and stops it, so the following commands never run. Run the stop command on its own.
 
 ## Commits

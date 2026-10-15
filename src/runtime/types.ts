@@ -1,4 +1,4 @@
-// Shapes of the JSON files written at build time under `_git-diff/`.
+// Shapes of the JSON files written at build time under `git-diff-data/`.
 // The node side writes them and the runtime side reads them.
 
 /** Why a revision is left out of the history lists. */

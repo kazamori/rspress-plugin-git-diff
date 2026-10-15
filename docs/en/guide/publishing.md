@@ -2,7 +2,7 @@
 
 ## What gets published
 
-The plugin writes the history to `_git-diff/` in the build output.
+The plugin writes the history to `git-diff-data/` in the build output.
 
 - `pages/`: the revisions of each page and the page version at each tag
 - `log/`: the recent commits of each version and language

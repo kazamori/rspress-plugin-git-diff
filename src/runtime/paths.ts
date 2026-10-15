@@ -1,5 +1,9 @@
-/** Directory of the data files, relative to the site base. */
-export const DATA_DIR = '_git-diff';
+/**
+ * Directory of the data files, relative to the site base. It must not start
+ * with an underscore: hosts that run Jekyll, such as GitHub Pages published
+ * from a branch, drop those directories from the site.
+ */
+export const DATA_DIR = 'git-diff-data';
 
 /** Path of a page index, relative to `DATA_DIR`. */
 export function pageIndexPath(routePath: string): string {
