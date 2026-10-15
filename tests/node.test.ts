@@ -97,6 +97,9 @@ describe('formatSubject', () => {
     { subject: 'Fix typos (#1, #2)', expected: 'Fix typos' },
     { subject: 'Refs #3: update the guide', expected: 'Refs: update the guide' },
     { subject: 'Use C# 12 syntax', expected: 'Use C# 12 syntax' },
+    { subject: 'Use C#7 features', expected: 'Use C#7 features' },
+    { subject: 'Wow!1 is a word here', expected: 'Wow!1 is a word here' },
+    { subject: '設定値を直す（#12）', expected: '設定値を直す' },
     { subject: '#99', expected: undefined },
   ])('strip-refs turns "$subject" into "$expected"', ({ subject, expected }) => {
     expect(formatSubject(subject, 'strip-refs', DEFAULT_ISSUE_REF_PATTERN)).toBe(expected);

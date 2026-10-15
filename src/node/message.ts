@@ -15,7 +15,7 @@ export function formatSubject(
       const stripped = subject
         .replace(issueRefPattern, '')
         // Clean up what the references leave behind, such as `()` or `, ,`.
-        .replace(/\(\s*(?:[,;]\s*)*\)|\[\s*(?:[,;]\s*)*\]/g, '')
+        .replace(/\(\s*(?:[,;]\s*)*\)|\[\s*(?:[,;]\s*)*\]|（\s*(?:[,;、]\s*)*）/g, '')
         .replace(/\s*[,;](?:\s*[,;])+/g, ',')
         .replace(/\s+([,;.:)\]])/g, '$1')
         .replace(/[\s,;:]+$/, '')

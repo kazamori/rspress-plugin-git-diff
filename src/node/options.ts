@@ -22,8 +22,10 @@ export interface GitDiffPluginOptions {
 export type ResolvedOptions = Required<Omit<GitDiffPluginOptions, 'since' | 'tagPattern'>> &
   Pick<GitDiffPluginOptions, 'since' | 'tagPattern'>;
 
-// Matches `#123`, `group/project#45` and `!67`.
-export const DEFAULT_ISSUE_REF_PATTERN = /(?:[\w.-]+(?:\/[\w.-]+)*)?[#!]\d+\b/g;
+// Matches `#123`, `group/project#45` and `!67` as separate words, so that text
+// such as `C#7` or `Wow!1` stays.
+export const DEFAULT_ISSUE_REF_PATTERN =
+  /(?<=^|[\s(\[（「、,;:])(?:[\w.-]+(?:\/[\w.-]+)+)?[#!]\d+\b/g;
 
 const DEFAULT_CHANGES_TITLE: Record<string, string> = {
   en: 'Recent changes',
