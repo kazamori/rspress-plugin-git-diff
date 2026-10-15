@@ -1,5 +1,7 @@
 # アーキテクチャ
 
+import { withBase } from '@rspress/core/runtime';
+
 このプラグインは 2 つの部分からなる。
 ビルド時には、git の履歴を読み出して静的なファイルに書き出し、描画するページの要素にソースの行番号を付ける。
 ブラウザでは、そのファイルを読み、ページ上の差分と最近の変更のページを表示する。
@@ -11,7 +13,7 @@
 
 ![System overview](/architecture/system-overview.png)
 
-<a href="/architecture/system-overview.html" target="_blank" rel="noreferrer">操作できる図を開く</a>
+<a href={withBase("/architecture/system-overview.html")} target="_blank" rel="noreferrer">操作できる図を開く</a>
 
 ## ページ上の差分の処理
 
@@ -19,7 +21,7 @@
 
 ![Showing a change on the page](/architecture/on-page-diff.png)
 
-<a href="/architecture/on-page-diff.html" target="_blank" rel="noreferrer">操作できる図を開く</a>
+<a href={withBase("/architecture/on-page-diff.html")} target="_blank" rel="noreferrer">操作できる図を開く</a>
 
 ## ビルド時のデータの流れ
 
@@ -27,4 +29,4 @@ git の履歴が `git-diff-data/` 配下のファイルになるまでの流れ�
 
 ![Build-time data flow](/architecture/build-data.png)
 
-<a href="/architecture/build-data.html" target="_blank" rel="noreferrer">操作できる図を開く</a>
+<a href={withBase("/architecture/build-data.html")} target="_blank" rel="noreferrer">操作できる図を開く</a>
