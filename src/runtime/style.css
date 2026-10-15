@@ -1,0 +1,415 @@
+.rp-git-diff-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4vh 16px;
+  background: rgba(0, 0, 0, 0.45);
+  overflow-y: auto;
+}
+
+.rp-git-diff-panel {
+  width: min(1200px, 100%);
+  background: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: var(--rp-radius-large, 12px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.rp-git-diff-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rp-c-divider-light);
+}
+
+.rp-git-diff-panel-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.rp-git-diff-meta {
+  display: block;
+  font-size: 0.875em;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-panel-body {
+  padding: 16px;
+}
+
+.rp-git-diff-toggle {
+  display: inline-flex;
+  border: 1px solid var(--rp-c-divider);
+  border-radius: var(--rp-radius-small, 6px);
+  overflow: hidden;
+}
+
+.rp-git-diff-toggle button,
+.rp-git-diff-close,
+.rp-git-diff-expand {
+  padding: 4px 12px;
+  font-size: 0.875em;
+  color: var(--rp-c-text-1);
+  background: var(--rp-c-bg);
+  cursor: pointer;
+}
+
+.rp-git-diff-toggle button + button {
+  border-left: 1px solid var(--rp-c-divider);
+}
+
+.rp-git-diff-toggle button[aria-pressed='true'] {
+  color: var(--rp-c-bg);
+  background: var(--rp-c-brand);
+}
+
+.rp-git-diff-close,
+.rp-git-diff-expand {
+  border: 1px solid var(--rp-c-divider);
+  border-radius: var(--rp-radius-small, 6px);
+}
+
+.rp-git-diff-message {
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-log > .rp-git-diff-toggle {
+  margin-bottom: 16px;
+}
+
+/* Each commit is a card so that the changes of one commit read as one unit. */
+.rp-git-diff-commit {
+  margin-bottom: 28px;
+  border: 1px solid var(--rp-c-divider);
+  border-radius: var(--rp-radius, 8px);
+  overflow: hidden;
+}
+
+.rp-git-diff-commit-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--rp-c-bg-soft);
+  border-bottom: 1px solid var(--rp-c-divider);
+  border-left: 4px solid var(--rp-c-brand);
+}
+
+/* The date column comes first and stands apart from the summary. */
+.rp-git-diff-date {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  min-width: 8.5em;
+  padding-right: 16px;
+  border-right: 1px solid var(--rp-c-divider);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.rp-git-diff-date-day {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--rp-c-brand-dark);
+}
+
+.rp-git-diff-date-time {
+  font-size: 0.9em;
+  color: var(--rp-c-text-1);
+}
+
+.rp-git-diff-date-offset {
+  font-size: 0.85em;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-commit-summary {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .rp-git-diff-commit-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rp-git-diff-date {
+    flex-direction: row;
+    gap: 8px;
+    align-items: baseline;
+    padding-right: 0;
+    border-right: none;
+  }
+}
+
+.rp-git-diff-meta-date {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--rp-c-text-1);
+}
+
+.rp-git-diff-subject {
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.rp-git-diff-commit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-top: 2px;
+  font-size: 0.85em;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-changes {
+  padding: 0 16px;
+}
+
+.rp-git-diff-change {
+  padding: 12px 0 16px;
+  /* Keep the page name clear of the navigation bar when scrolled to. */
+  scroll-margin-top: calc(var(--rp-nav-height, 64px) + 16px);
+}
+
+.rp-git-diff-change + .rp-git-diff-change {
+  border-top: 1px dashed var(--rp-c-divider);
+}
+
+.rp-git-diff-change-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-bottom: 8px;
+}
+
+.rp-git-diff-change-header > a:first-child,
+.rp-git-diff-change-header > span:first-child,
+.rp-git-diff-change-header > code:first-child {
+  font-weight: 600;
+}
+
+.rp-git-diff-change-header a {
+  color: var(--rp-c-link);
+}
+
+.rp-git-diff-status,
+.rp-git-diff-open {
+  font-size: 0.875em;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-body {
+  overflow-x: auto;
+}
+
+.rp-git-diff-body + .rp-git-diff-expand,
+.rp-git-diff-expand + .rp-git-diff-body {
+  margin-top: 8px;
+}
+
+/* Keep diff2html close to the theme; its own header repeats the page name. */
+.rp-git-diff-body .d2h-file-header {
+  display: none;
+}
+
+.rp-git-diff-body .d2h-wrapper {
+  font-size: 13px;
+}
+
+.rp-git-diff-body .d2h-file-wrapper {
+  margin-bottom: 0;
+  border-color: var(--rp-c-divider-light);
+}
+
+.rp-git-diff-body .d2h-code-line-ctn {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* The bar shown while a change is marked on the page. */
+.rp-git-diff-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  z-index: 900;
+  transform: translateX(-50%);
+  width: min(960px, calc(100% - 32px));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 16px;
+  color: var(--rp-c-text-1);
+  background: var(--rp-c-bg);
+  border: 1px solid var(--rp-c-divider);
+  border-left: 4px solid var(--rp-c-brand);
+  border-radius: var(--rp-radius, 8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  font-size: 0.9em;
+}
+
+.rp-git-diff-bar-title {
+  flex: 1 1 240px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.rp-git-diff-bar-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  flex: 1 1 240px;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rp-git-diff-button {
+  padding: 4px 10px;
+  color: var(--rp-c-text-1);
+  background: var(--rp-c-bg);
+  border: 1px solid var(--rp-c-divider);
+  border-radius: var(--rp-radius-small, 6px);
+  cursor: pointer;
+}
+
+.rp-git-diff-navigator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rp-git-diff-counter {
+  font-variant-numeric: tabular-nums;
+  color: var(--rp-c-text-2);
+}
+
+.rp-git-diff-candidate {
+  margin-left: 8px;
+  color: var(--rp-c-link);
+}
+
+.rp-git-diff-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rp-git-diff-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
+  border-radius: 3px;
+}
+
+.rp-git-diff-swatch:first-child {
+  margin-left: 0;
+}
+
+/* Marks on the page. The colors are translucent to suit both themes. */
+.rp-git-diff-swatch-added,
+.rp-git-diff-added,
+.rp-git-diff-added-inline,
+.rp-git-diff-added-line {
+  background: rgba(46, 160, 67, 0.2);
+}
+
+.rp-git-diff-swatch-deleted,
+.rp-git-diff-deleted,
+.rp-git-diff-deleted-inline,
+.rp-git-diff-deleted-line {
+  background: rgba(218, 54, 51, 0.16);
+}
+
+.rp-git-diff-swatch-later,
+.rp-git-diff-later,
+.rp-git-diff-later-inline,
+.rp-git-diff-later-line {
+  background: rgba(212, 167, 44, 0.25);
+}
+
+.rp-git-diff-added,
+.rp-git-diff-later {
+  border-radius: 4px;
+}
+
+.rp-git-diff-added {
+  box-shadow: inset 4px 0 0 rgba(46, 160, 67, 0.8);
+  padding-left: 8px;
+}
+
+.rp-git-diff-later {
+  box-shadow: inset 4px 0 0 rgba(212, 167, 44, 0.9);
+  padding-left: 8px;
+}
+
+.rp-git-diff-added-inline,
+.rp-git-diff-later-inline {
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.rp-git-diff-deleted-inline {
+  color: var(--rp-c-text-2);
+  border-radius: 3px;
+  padding: 0 2px;
+  margin-right: 4px;
+}
+
+.rp-git-diff-deleted {
+  margin: 8px 0;
+  padding: 6px 12px;
+  border-radius: 4px;
+  box-shadow: inset 4px 0 0 rgba(218, 54, 51, 0.8);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  color: var(--rp-c-text-2);
+}
+
+tr.rp-git-diff-deleted td {
+  font-family: var(--rp-font-family-mono);
+  white-space: pre-wrap;
+}
+
+.rp-git-diff-added-line,
+.rp-git-diff-later-line,
+.rp-git-diff-deleted-line {
+  display: inline-block;
+  min-width: 100%;
+}
+
+.rp-git-diff-deleted-line {
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+
+.rp-git-diff-current {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 2px;
+}
+
+/* Keep the last lines of the page above the bar. */
+body:has(.rp-git-diff-bar) .rp-doc-layout__doc {
+  padding-bottom: 120px;
+}
