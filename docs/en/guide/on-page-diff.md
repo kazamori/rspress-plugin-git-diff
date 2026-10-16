@@ -20,6 +20,22 @@ A revision is one of the following.
 - **A tag**: any tag in the repository, unless [`tagPattern`](./options) narrows them down. A tag can name a point where the page did not change.
 - **`HEAD`**: the latest version of the page.
 
+## Tag your releases
+
+A commit hash in `?diff=` must name a commit that changed the page.
+To show everything that changed on a page since a release, readers need a name for the release itself, and only a tag gives one: `?diff=v2.0..` works on every page, whether or not the page changed in the release commit.
+Without tags, ranges are of little use.
+
+- **Tag each release** of the docs, such as `v2.0`.
+- **With `multiVersion`**, a release usually copies the development directory to a new version directory, such as `docs/dev/` to `docs/2.0/`. Tag the commit that makes the copy. At that commit both directories have the same content, so the same range answers two questions:
+  - on a page of the development version, `?diff=v2.0..` shows what changed since the release, that is, what the next release will change;
+  - on a page of the released version, `?diff=v2.0..` shows the corrections made after the release.
+- **Tags added later** to older commits may not give the same result. If the development directory already had changes for the next release at the tagged commit, the tag names those changes on the pages of the development version, not the release. A tag also does not resolve on a page that had another path at the tag, unless git followed the move as a rename.
+- **Set [`tagPattern`](./options)** to the release tags, such as `/^v\d/`, so that other tags in the repository cannot be used in `?diff=`.
+
+The tags are read when the site is built, so a new tag works on the site after the next build, not when it is pushed.
+With [`since`](./options), tags older than `since` are not written.
+
 ## How changes are marked
 
 The plugin marks the rendered page rather than drawing a separate diff.
