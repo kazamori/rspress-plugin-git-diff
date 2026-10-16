@@ -10,3 +10,6 @@ docs/architecture/*.browser-check.json
 docs/architecture/*.delivery.json
 docs/architecture/*.finalize.json
 docs/architecture/*.finalize-summary.json
+# Playwright reports and traces.
+playwright-report/
+test-results/

@@ -13,5 +13,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["src", "tests", "rslib.config.ts", "rstest.config.ts"]
+  "include": ["src", "tests", "e2e", "rslib.config.ts", "rstest.config.ts", "playwright.config.ts"]
 }

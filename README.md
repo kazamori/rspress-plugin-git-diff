@@ -52,6 +52,7 @@ bun install
 bun run typecheck
 bun run test
 bun run build
+bun run e2e   # end-to-end tests with Playwright; run `bunx playwright install chromium` first
 ```
 
 `example/` holds a small site with a scripted git history for trying the plugin by hand:

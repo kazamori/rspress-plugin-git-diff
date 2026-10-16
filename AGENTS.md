@@ -19,6 +19,7 @@ mise install            # install bun
 bun install
 bun run typecheck       # tsc --noEmit
 bun run test            # rstest, with a node and a dom project
+bun run e2e             # Playwright, against the example site (see "Tests")
 bun run build           # rslib, into dist/
 bun run docs:dev        # the documentation site, which uses dist/
 ```
@@ -88,6 +89,7 @@ Dark mode follows the Rspress switch; the diff2html color scheme follows `useDar
 - Test pure functions (log parsing, history building, revision resolution, line mapping) with unit tests.
 - Test git reading as `tests/collect.test.ts` does: create a git repository in a temporary directory, with dates and authors fixed through environment variables.
 - Test page marking as `tests/annotate.dom.test.ts` does: with HTML fragments shaped like what Rspress renders.
+- Test the behavior in the browser with the end-to-end tests in `e2e/`. `bun run e2e` recreates and builds the example site, serves it on port 4173 and runs Playwright against it (`playwright.config.ts`); run `bunx playwright install chromium` once beforehand. Look commits up with `hashOf()` in `e2e/history.ts`, and set `locale` for pages in another language. When you add a kind of change to `create-repo.ts`, add a test for how it is shown.
 
 ## Documentation
 
@@ -95,7 +97,7 @@ The site in `docs/` documents the plugin and uses it, so its own git history is 
 `rspress.config.ts` at the repository root configures it and imports the plugin from `dist/`.
 `.github/workflows/pages.yml` publishes it to GitHub Pages on every push to `main`, under the `base` `/rspress-plugin-git-diff/`.
 Write links in the pages without the base; Rspress adds it.
-`.github/workflows/ci.yml` runs `typecheck`, `test` and `build` on pushes and pull requests.
+`.github/workflows/ci.yml` runs `typecheck`, `test` and `build`, and the end-to-end tests, on pushes and pull requests.
 
 - Keep the English and Japanese pages in step. Write English first; Japanese follows the same structure.
 - Navigation and sidebars come from `_nav.json` and `_meta.json` in each language directory. Keep both files: a `nav` in the config turns off the generated sidebar, and a `_nav.json` alone gives a sidebar per subdirectory only.
