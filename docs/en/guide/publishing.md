@@ -36,10 +36,27 @@ Pages added or edited without a commit have no history until they are committed.
 
 The output grows with the history.
 `git-diff-data/` holds every version of every page in the history, and the index of each page records the version of the page at every tag.
-On the Rspack documentation (about 370 pages, 1,200 commits and 400 tags), it was about 90 MB.
+Two options narrow down what is written.
 
-- **Set [`tagPattern`](./options)** to the tags readers should use in `?diff=`. Without it, every tag in the repository is recorded for every page, including tags of packages in a monorepo. The build warns when it writes more than 20 tags without `tagPattern`.
-- **Set [`since`](./options)** to leave out the history before a tag or commit, such as the last major release. This removes the old versions themselves, which make up most of the output.
+- **[`tagPattern`](./options)**: only the tags readers should use in `?diff=` are recorded. Without it, every tag in the repository is recorded for every page, including tags of packages in a monorepo. The build warns when it writes more than 20 tags without `tagPattern`.
+- **[`since`](./options)**: the history before a tag or commit, such as the last major release, is not written. This removes the old versions themselves, which make up most of the output.
+
+With `since`, only tags that descend from `since` in the history are written.
+In a repository that tags its releases on release branches, a release tag as `since` leaves out the later release tags too, because they are on other branches.
+In that case, set `since` to the commit on the main branch where the release branch starts, such as the output of `git merge-base v2.0.0 main`.
+
+As an example, these are the sizes for the documentation of [Rspack](https://github.com/web-infra-dev/rspack) (374 pages, 1,212 commits, release tags on release branches), measured in October 2026 with `tagPattern: /^v\d/`:
+
+| `since` | Commits | `git-diff-data/` | Tags written |
+| --- | --- | --- | --- |
+| none | 1,212 | 88.6 MiB | 239 |
+| `v1.0.0` (August 2024) | 902 | 71.6 MiB | 1 |
+| `v1.5.0` (August 2025) | 548 | 51.3 MiB | 1 |
+| `v2.0.0` (April 2026) | 274 | 28.0 MiB | 1 |
+| `git merge-base v2.0.0 main` | 274 | 28.1 MiB | 34 |
+
+Without `tagPattern`, all 402 tags of the repository were recorded, and `git-diff-data/` was 91.3 MiB.
+Pages that have not changed since `since` have no history; with `v2.0.0`, 18 of the 374 pages had none.
 
 To see what reading the history costs, set `RSPRESS_GIT_DIFF_STATS=1`.
 The build then prints the time, the heap in use and the counts of each step: reading the log, reading the page contents, building the data and writing the files.
