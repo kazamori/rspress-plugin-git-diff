@@ -31,7 +31,7 @@ When you finish a change, make sure `typecheck`, `test` and `build` all pass.
 - **`src/node/`**: the Rspress plugin. It runs in Node.js, and rslib bundles it into `dist/index.js`.
 - **`src/runtime/`**: components and CSS for the browser. rslib emits them unbundled into `dist/runtime/`, and the site's Rsbuild compiles them again.
 - **`tests/`**: tests. `*.dom.test.ts` run in happy-dom and the rest in Node (`rstest.config.ts`).
-- **`docs/`**: the documentation site, in English (`docs/en/`) and Japanese (`docs/ja/`). See "Documentation" below.
+- **`docs/`**: the documentation site, in English (`docs/dev/en/`) and Japanese (`docs/dev/ja/`). See "Documentation" below.
 - **`example/`**: a small site for trying the plugin by hand. See "Example site" below.
 
 ### Build-time flow
@@ -98,6 +98,8 @@ The site in `docs/` documents the plugin and uses it, so its own git history is 
 `rspress.config.ts` at the repository root configures it and imports the plugin from `dist/`.
 `.github/workflows/pages.yml` publishes it to GitHub Pages on every push to `main`, under the `base` `/rspress-plugin-git-diff/`.
 Write links in the pages without the base; Rspress adds it.
+The site uses `multiVersion` with a single version, `dev`, which describes `main`; its pages are in `docs/dev/`.
+Rspress shows its version switch only with two or more versions, so the `_nav.json` files have a `dev` menu instead; remove it when a released version is added next to `dev`.
 `.github/workflows/ci.yml` runs `typecheck`, `test` and `build`, and the end-to-end tests, on pushes and pull requests.
 
 - Keep the English and Japanese pages in step. Write English first; Japanese follows the same structure.
@@ -137,6 +139,10 @@ Still, do not write tests or scripts that depend on hash values; look commits up
 - **Line numbers of code blocks**: syntax highlighting rebuilds `pre`, and the position is gone by the rehype stage. The remark plugin wraps code blocks in an element that keeps their lines.
 - **Directory names starting with an underscore**: hosts that run Jekyll, such as GitHub Pages published from a branch, drop them from the site. For this reason, the data directory was renamed from `_git-diff/` to `git-diff-data/`; keep output names free of a leading underscore.
 - **Stopping the preview server**: `pkill -f "rspress preview"` chained with other commands in one shell matches that shell too and stops it, so the following commands never run. Run the stop command on its own.
+
+## Releases
+
+README.md describes how to publish to npm.
 
 ## Commits
 

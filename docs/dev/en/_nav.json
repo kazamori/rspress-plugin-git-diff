@@ -1,0 +1,12 @@
+[
+  { "text": "Guide", "link": "/guide/getting-started" },
+  { "text": "Architecture", "link": "/architecture" },
+  { "text": "Recent changes", "link": "/changes" },
+  {
+    "text": "dev",
+    "items": [
+      { "text": "Package on npm", "link": "https://www.npmjs.com/package/@kazamori/rspress-plugin-git-diff" },
+      { "text": "Releases", "link": "https://github.com/kazamori/rspress-plugin-git-diff/releases" }
+    ]
+  }
+]

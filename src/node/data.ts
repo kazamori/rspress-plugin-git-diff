@@ -163,7 +163,10 @@ function buildLogs(input: BuildContext, histories: FileHistory[]): Map<string, L
       const routePath =
         history && !history.deleted ? (input.routes.get(history.path) ?? null) : null;
       const deleted = change.status === 'D';
-      add(change.path, {
+      // A page that still exists belongs to the version and language it is in
+      // now, even for changes made before it moved, such as into a version
+      // directory when a site starts using multiVersion.
+      add(history && !history.deleted ? history.path : change.path, {
         kind: 'page',
         status: logStatus(change),
         title: pageTitle(change, input.contents),
