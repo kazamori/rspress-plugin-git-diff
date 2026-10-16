@@ -1,5 +1,7 @@
+import { cp } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { RsbuildConfig } from '@rsbuild/core';
 import type { RspressPlugin, UserConfig } from '@rspress/core';
 import { i18nTexts } from '../runtime/i18n';
 import { DATA_DIR } from '../runtime/paths';
@@ -49,6 +51,12 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
         : undefined,
     }));
 
+  // Rspress reads this after `beforeBuild`, which sets how the data reaches the
+  // site.
+  const builderConfig: RsbuildConfig = {
+    plugins: [rsbuildPluginLlms(llmsChangesPages, () => base)],
+  };
+
   return {
     name: PLUGIN_NAME,
     globalUIComponents: [
@@ -71,12 +79,7 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
       remarkPlugins: [[remarkCodeLines, { pageRouteOf }]],
       rehypePlugins: [[rehypeSourceLines, { pageRouteOf }]],
     },
-    builderConfig: {
-      output: {
-        copy: [{ from: cacheDir, to: DATA_DIR }],
-      },
-      plugins: [rsbuildPluginLlms(llmsChangesPages, () => base)],
-    },
+    builderConfig,
 
     i18nSource(source) {
       return { ...source, ...i18nTexts };
@@ -105,8 +108,15 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
       }
     },
 
-    async beforeBuild(config) {
+    async beforeBuild(config, isProd) {
       base = config.base ?? '/';
+      // The dev server serves the data from memory, so Rsbuild copies it there.
+      // A build copies the files itself after Rsbuild is done: through Rsbuild,
+      // every file would be held in memory, which on a site with a long history
+      // costs gigabytes.
+      builderConfig.environments = isProd
+        ? undefined
+        : { web: { output: { copy: [{ from: cacheDir, to: DATA_DIR }] } } };
       logs = await collectGitData({
         docsDir: path.resolve(config.root ?? 'docs'),
         routes: pageRoutes,
@@ -119,6 +129,13 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
           ? (message) => console.log(`[${PLUGIN_NAME}] ${message}`)
           : undefined,
       });
+    },
+
+    async afterBuild(config, isProd) {
+      if (isProd) {
+        const outDir = path.resolve(config.outDir ?? 'doc_build');
+        await cp(cacheDir, path.join(outDir, DATA_DIR), { recursive: true });
+      }
     },
   };
 }
