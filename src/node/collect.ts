@@ -6,6 +6,7 @@ import { blobsToRead, buildSiteData, type TagSnapshot } from './data';
 import { readBlobs, runGit, testGit } from './git';
 import { LOG_FORMAT, parseLog } from './log';
 import type { ResolvedOptions } from './options';
+import { createStats } from './stats';
 import type { SiteLayout } from './scope';
 
 export interface CollectInput {
@@ -18,6 +19,8 @@ export interface CollectInput {
   /** Directory to write the data files into; it is emptied first. */
   outDir: string;
   warn: (message: string) => void;
+  /** Receives the time, heap and counts of each step, when given. */
+  stats?: (message: string) => void;
 }
 
 /**
@@ -29,6 +32,7 @@ export async function collectGitData(input: CollectInput): Promise<Map<string, L
   await mkdir(input.outDir, { recursive: true });
 
   const { docsDir, options, warn } = input;
+  const stats = createStats(input.stats);
   if (!(await testGit(docsDir, ['rev-parse', '--is-inside-work-tree']))) {
     warn(`${docsDir} is not in a git repository; no history is shown`);
     return new Map();
@@ -55,10 +59,16 @@ export async function collectGitData(input: CollectInput): Promise<Map<string, L
     pathspec,
   ]);
   const commits = parseLog(logOutput);
+  stats.step('git log', { commits: commits.length, 'log bytes': logOutput.length });
 
   const rootDirs = await readRootDirs(repoRoot, docsPrefix);
   const tags = await readTags(repoRoot, pathspec, options);
   const contents = await readBlobs(repoRoot, blobsToRead(commits));
+  stats.step('read blobs', {
+    tags: tags.length,
+    blobs: contents.size,
+    'blob bytes': sumBytes(contents.values()),
+  });
 
   const routes = new Map<string, string>();
   for (const [absolutePath, routePath] of input.routes) {
@@ -76,16 +86,30 @@ export async function collectGitData(input: CollectInput): Promise<Map<string, L
     options,
   });
 
+  stats.step('build data', {
+    pages: data.pages.length,
+    revisions: data.pages.reduce((sum, page) => sum + page.revisions.length, 0),
+    'log commits': [...data.logs.values()].reduce((sum, log) => sum + log.commits.length, 0),
+  });
+
   const missing = [...data.blobs].filter((hash) => !contents.has(hash));
   const allContents = new Map([...contents, ...(await readBlobs(repoRoot, missing))]);
 
+  const written: string[] = [];
+  const write = (relative: string, content: string) => {
+    written.push(content);
+    return writeText(input.outDir, relative, content);
+  };
   await Promise.all([
-    ...data.pages.map((page) => writeJson(input.outDir, pageIndexPath(page.routePath), page)),
-    ...[...data.logs].map(([key, log]) => writeJson(input.outDir, logIndexPath(key), log)),
-    ...[...data.blobs].map((hash) =>
-      writeText(input.outDir, blobPath(hash), allContents.get(hash) ?? ''),
-    ),
+    ...data.pages.map((page) => write(pageIndexPath(page.routePath), JSON.stringify(page))),
+    ...[...data.logs].map(([key, log]) => write(logIndexPath(key), JSON.stringify(log))),
+    ...[...data.blobs].map((hash) => write(blobPath(hash), allContents.get(hash) ?? '')),
   ]);
+  stats.step('write files', {
+    files: written.length,
+    'written blobs': data.blobs.size,
+    'written bytes': sumBytes(written),
+  });
   return data.logs;
 }
 
@@ -152,14 +176,16 @@ function parseTree(output: string): Map<string, string> {
   return files;
 }
 
-async function writeJson(root: string, relative: string, value: unknown): Promise<void> {
-  await writeText(root, relative, JSON.stringify(value));
-}
-
 async function writeText(root: string, relative: string, content: string): Promise<void> {
   const file = path.join(root, relative);
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, content);
+}
+
+function sumBytes(texts: Iterable<string>): number {
+  let sum = 0;
+  for (const text of texts) sum += Buffer.byteLength(text);
+  return sum;
 }
 
 function toPosix(p: string): string {

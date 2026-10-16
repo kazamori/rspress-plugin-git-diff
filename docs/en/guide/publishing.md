@@ -31,3 +31,12 @@ Fetch the full history and the tags before building.
 
 The plugin reads committed history only.
 Pages added or edited without a commit have no history until they are committed.
+
+## Build statistics
+
+On a large site, set `RSPRESS_GIT_DIFF_STATS=1` to see what reading the history costs.
+The build then prints the time, the heap in use and the counts of each step: reading the log, reading the page contents, building the data and writing the files.
+
+```sh
+RSPRESS_GIT_DIFF_STATS=1 rspress build
+```

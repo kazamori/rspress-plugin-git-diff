@@ -114,6 +114,10 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
         options,
         outDir: cacheDir,
         warn: (message) => console.warn(`[${PLUGIN_NAME}] ${message}`),
+        // For measuring large sites; see the publishing guide.
+        stats: process.env.RSPRESS_GIT_DIFF_STATS
+          ? (message) => console.log(`[${PLUGIN_NAME}] ${message}`)
+          : undefined,
       });
     },
   };
