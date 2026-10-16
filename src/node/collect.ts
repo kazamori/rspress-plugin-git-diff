@@ -52,6 +52,7 @@ export async function collectGitData(input: CollectInput): Promise<void> {
   ]);
   const commits = parseLog(logOutput);
 
+  const rootDirs = await readRootDirs(repoRoot, docsPrefix);
   const tags = await readTags(repoRoot, pathspec, options);
   const contents = await readBlobs(repoRoot, blobsToRead(commits));
 
@@ -65,6 +66,7 @@ export async function collectGitData(input: CollectInput): Promise<void> {
     docsPrefix,
     routes,
     layout: input.layout,
+    rootDirs,
     tags,
     contents,
     options,
@@ -80,6 +82,23 @@ export async function collectGitData(input: CollectInput): Promise<void> {
       writeText(input.outDir, blobPath(hash), allContents.get(hash) ?? ''),
     ),
   ]);
+}
+
+/** Lists the directories directly under the docs root at `HEAD`. */
+async function readRootDirs(repoRoot: string, docsPrefix: string): Promise<Set<string>> {
+  const output = await runGit(repoRoot, [
+    'ls-tree',
+    '-d',
+    '--name-only',
+    'HEAD',
+    ...(docsPrefix ? ['--', docsPrefix] : []),
+  ]);
+  return new Set(
+    output
+      .split('\n')
+      .filter((line) => line !== '')
+      .map((line) => line.slice(docsPrefix.length)),
+  );
 }
 
 async function readTags(

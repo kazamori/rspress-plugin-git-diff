@@ -4,7 +4,7 @@ import { type Commit, type FileChange, parseLog } from '../src/node/log';
 import { formatSubject } from '../src/node/message';
 import { DEFAULT_ISSUE_REF_PATTERN, resolveOptions } from '../src/node/options';
 import { extractTitle, isFormatOnlyChange } from '../src/node/page';
-import { scopedRoutePath, scopeOfPath, type SiteLayout } from '../src/node/scope';
+import { isDroppedVersionPath, scopedRoutePath, scopeOfPath, type SiteLayout } from '../src/node/scope';
 
 describe('parseLog', () => {
   test('reads commits and their raw changes', () => {
@@ -160,6 +160,21 @@ describe('scope', () => {
     { scope: { version: 'v1', lang: 'en' }, expected: '/v1/en/changes' },
   ])('scopedRoutePath($scope.version, $scope.lang)', ({ scope, expected }) => {
     expect(scopedRoutePath(scope, layout, '/changes')).toBe(expected);
+  });
+
+  test.each([
+    { path: 'v0/ja/a.md', layout, expected: true, name: 'a dropped version' },
+    { path: 'v1/ja/a.md', layout, expected: false, name: 'a configured version' },
+    { path: 'public/a.png', layout, expected: false, name: 'a directory present at HEAD' },
+    { path: 'index.md', layout, expected: false, name: 'a file at the root' },
+    {
+      path: 'v0/a.md',
+      layout: { ...layout, versions: [] },
+      expected: false,
+      name: 'a site without versions',
+    },
+  ])('isDroppedVersionPath: $name', ({ path, layout, expected }) => {
+    expect(isDroppedVersionPath(path, layout, new Set(['v1', 'v2', 'public']))).toBe(expected);
   });
 });
 

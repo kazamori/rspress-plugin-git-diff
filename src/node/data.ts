@@ -12,7 +12,7 @@ import type { Commit, FileChange } from './log';
 import { formatSubject } from './message';
 import type { ResolvedOptions } from './options';
 import { extractTitle, isAssetFile, isFormatOnlyChange, isPageFile } from './page';
-import { listScopes, scopeKey, scopeOfPath, type SiteLayout } from './scope';
+import { isDroppedVersionPath, listScopes, scopeKey, scopeOfPath, type SiteLayout } from './scope';
 
 export interface TagSnapshot {
   name: string;
@@ -28,6 +28,8 @@ export interface DataInput {
   /** Route of every page on the site, keyed by repository path. */
   routes: Map<string, string>;
   layout: SiteLayout;
+  /** Directories directly under the docs root at `HEAD`. */
+  rootDirs: Set<string>;
   tags: TagSnapshot[];
   /** Contents of the blobs listed by `blobsToRead`. */
   contents: Map<string, string>;
@@ -137,7 +139,11 @@ function buildLogs(input: BuildContext, histories: FileHistory[]): Map<string, L
   for (const commit of input.commits) {
     const byScope = new Map<string, LogChange[]>();
     const add = (path: string, change: LogChange) => {
-      const key = scopeKey(scopeOfPath(path.slice(input.docsPrefix.length), input.layout));
+      const relative = path.slice(input.docsPrefix.length);
+      if (isDroppedVersionPath(relative, input.layout, input.rootDirs)) {
+        return;
+      }
+      const key = scopeKey(scopeOfPath(relative, input.layout));
       const list = byScope.get(key) ?? [];
       list.push(change);
       byScope.set(key, list);
