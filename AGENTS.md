@@ -93,6 +93,9 @@ Dark mode follows the Rspress switch; the diff2html color scheme follows `useDar
 
 The site in `docs/` documents the plugin and uses it, so its own git history is what its recent changes pages show.
 `rspress.config.ts` at the repository root configures it and imports the plugin from `dist/`.
+`.github/workflows/pages.yml` publishes it to GitHub Pages on every push to `main`, under the `base` `/rspress-plugin-git-diff/`.
+Write links in the pages without the base; Rspress adds it.
+`.github/workflows/ci.yml` runs `typecheck`, `test` and `build` on pushes and pull requests.
 
 - Keep the English and Japanese pages in step. Write English first; Japanese follows the same structure.
 - Navigation and sidebars come from `_nav.json` and `_meta.json` in each language directory. Keep both files: a `nav` in the config turns off the generated sidebar, and a `_nav.json` alone gives a sidebar per subdirectory only.
