@@ -38,12 +38,14 @@
     "example:dev": "bun run build && rspress dev --config example/rspress.config.ts",
     "example:build": "bun run build && rspress build --config example/rspress.config.ts",
     "example:preview": "rspress preview --config example/rspress.config.ts",
+    "e2e": "bun run example:setup && bun run example:build && playwright test",
     "prepublishOnly": "bun run typecheck && bun run test && bun run build"
   },
   "peerDependencies": {
     "@rspress/core": "^2.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@rsbuild/core": "^2.2.10",
     "@rsbuild/plugin-react": "^2.1.1",
     "@rslib/core": "^1.0.3",
