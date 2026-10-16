@@ -1,4 +1,4 @@
-import { withBase } from '@rspress/core/runtime';
+import { normalizeHrefInRuntime, withBase } from '@rspress/core/runtime';
 import { queryHash, shortHash, splitCommitDate } from './commit';
 import { DiffView, FormatToggle } from './DiffView';
 import { loadLogIndex } from './fetch';
@@ -106,7 +106,8 @@ function PageChangeEntry({
 }) {
   const t = useText();
   const deleted = change.status === 'deleted';
-  const pageUrl = change.routePath && withBase(change.routePath);
+  // Follows `route.cleanUrls`: the `.html` suffix is needed on static hosts without fallback.
+  const pageUrl = change.routePath && withBase(normalizeHrefInRuntime(change.routePath));
   return (
     <div className="rp-git-diff-change">
       <div className="rp-git-diff-change-header">
