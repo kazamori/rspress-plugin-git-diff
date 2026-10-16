@@ -5,6 +5,11 @@ export interface GitDiffPluginOptions {
   changesRoutePath?: string;
   /** Title of the recent changes page per language. */
   changesTitle?: Record<string, string>;
+  /**
+   * Whether the recent changes pages are listed in `llms.txt` and `llms-full.txt`
+   * when the site sets `llms`. When they are, their Markdown lists the commits.
+   */
+  changesInLlms?: boolean;
   /** Number of commits on the recent changes page. */
   maxCommits?: number;
   /** Diffs longer than this are collapsed on the recent changes page. */
@@ -41,6 +46,7 @@ export function resolveOptions(options: GitDiffPluginOptions = {}): ResolvedOpti
   return {
     changesRoutePath: options.changesRoutePath ?? '/changes',
     changesTitle: { ...DEFAULT_CHANGES_TITLE, ...options.changesTitle },
+    changesInLlms: options.changesInLlms ?? false,
     maxCommits: options.maxCommits ?? 50,
     maxDiffLines: options.maxDiffLines ?? 200,
     since: options.since,

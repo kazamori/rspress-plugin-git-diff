@@ -14,6 +14,7 @@ pluginGitDiff({
 | --- | --- | --- |
 | `changesRoutePath` | `'/changes'` | URL of the recent changes page, after the version and language prefixes |
 | `changesTitle` | per language | Title of the recent changes page, such as `{ en: 'What changed', ja: '変更履歴' }` |
+| `changesInLlms` | `false` | List the recent changes pages in `llms.txt` when the site sets `llms`; see [Recent changes](./recent-changes#llmstxt) |
 | `maxCommits` | `50` | Number of commits on the recent changes page |
 | `maxDiffLines` | `200` | Diffs with more changed lines than this are collapsed on the recent changes page |
 | `commitMessage` | `'strip-refs'` | How to show commit subjects; see below |

@@ -36,3 +36,12 @@ With `multiVersion` or `locales`, each version and language gets its own page, s
 Each lists only the changes under its own directory, so a fix copied to several versions does not appear several times on one page.
 
 The page lists up to [`maxCommits`](./options) commits.
+
+## llms.txt
+
+With `llms: true`, Rspress writes `llms.txt`, `llms-full.txt` and a Markdown version of every page.
+The recent changes page is rendered in the browser, so its Markdown version would contain no commits.
+For this reason, the plugin leaves the recent changes pages out of these files by default.
+
+Set [`changesInLlms`](./options) to `true` to list them.
+Their Markdown versions then list the commits with the date, the subject and the changed pages, without the diffs.
