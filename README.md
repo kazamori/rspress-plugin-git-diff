@@ -121,6 +121,9 @@ npm whoami
    gh workflow run pages.yml
    ```
 
+   The registry processes a new version before it serves it, so `npm view` may return 404 for a few minutes after `npm publish` (about six minutes for 0.5.0).
+   `npm publish` reports this with "Your package is being processed and may take a few minutes to become available"; wait and run `npm view` again.
+
 ## License
 
 MIT
