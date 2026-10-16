@@ -6,6 +6,7 @@ Release notes and changelogs cover features and specification changes, but small
 This plugin reads the history at build time and publishes it with the site, so readers can see those edits without access to your repository.
 
 - **On-page diff**: add `?diff=<rev>` or `?diff=<from>..<to>` to a page URL, and the changes are marked on the rendered page itself, down to the sentence. A bar at the bottom moves between the changes (`n` / `p`) and opens the source diff.
+- **Page history**: each page lists its own revisions with their diffs in a drawer, opened from the end of the page, the navigation bar, or `?history`.
 - **Recent changes**: a `/changes` page lists recent commits with the diff of each changed page, like `git log -p`, for each version and language.
 - **Noise left out**: added files (such as directories copied for a new version), renames that keep the content, and whitespace-only edits stay out of the lists.
 - **Safe defaults for private repositories**: only the subject line of a commit message is published, with issue references stripped.

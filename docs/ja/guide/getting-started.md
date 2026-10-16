@@ -41,6 +41,7 @@ export default defineConfig({
 サイトをビルドするか開発サーバーを起動し、次の URL を開く。
 
 - `/changes` には、最近のコミットと差分が並ぶ。詳しくは[最近の変更](./recent-changes)を参照する。このページへのリンクはプラグインが加えないので、[ナビゲーションに置く](./recent-changes#ページへのリンク)。
+- 任意のページに `?history` を付けて開くと（`/guide/getting-started?history` など）、そのページの変更履歴がドロワーに開く。ページの末尾の 1 行からも開ける。詳しくは[ページの変更履歴](./page-history)を参照する。
 - 任意のページに `?diff=HEAD` を付けて開くと（`/guide/getting-started?diff=HEAD` など）、そのページの最新の変更に、ページ上で印が付く。詳しくは[ページ上の差分](./on-page-diff)を参照する。
 
 このサイト自体もこのプラグインを使っている。

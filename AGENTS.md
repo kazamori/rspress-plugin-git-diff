@@ -48,6 +48,7 @@ Rspress calls the hooks in this order: `config`, `addPages`, `routeGenerated`, `
 
 - **`PageDiff.tsx`**: registered in `globalUIComponents`. It runs only when the URL has `diff`, marks the page and shows the bar.
 - **`GitDiffLog.tsx`**: the body of the recent changes page.
+- **`PageHistory.tsx`**: registered in `globalUIComponents` unless `pageHistory` is `false`. It shows the history of the page in a drawer when the URL has `history`, and inserts the entries (`PageHistoryEntries.tsx`) into the rendered page through portals, because a plugin cannot fill the layout slots. `index.ts` exports the entries as `./runtime` for themes.
 - The diff computation (`lineMap.ts`, `render.ts`) and the marking (`annotate.ts`) are dynamic imports, so pages without `diff` do not load jsdiff and diff2html. Do not turn them into static imports.
 
 ## Constraints

@@ -22,6 +22,8 @@ pluginGitDiff({
 | `since` | なし | このタグかコミットより後の履歴だけを書き出す |
 | `tagPattern` | なし | `?diff=` で使えるタグを、一致するものに絞る |
 | `showAuthor` | `false` | コミットの作者名を表示する |
+| `pageHistory` | `true` | [ページの変更履歴](./page-history)。`false` で止める。`{ entries }` で入り口の置き場所を `'footer'`、`'nav'` から選ぶ（既定値は `['footer']`、空なら置かない） |
+| `maxPageRevisions` | `20` | ページの変更履歴に並べる版の数 |
 
 ## コミットメッセージ
 
