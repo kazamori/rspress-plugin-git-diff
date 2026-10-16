@@ -76,4 +76,26 @@ export const i18nTexts: Record<string, Record<string, string>> = {
   },
   gitDiffCollapse: { en: 'Collapse the diff', ja: '差分を折りたたむ', zh: '折叠差异' },
   gitDiffEmptyLog: { en: 'No changes yet.', ja: '変更はまだありません。', zh: '暂无更改。' },
+  gitDiffHistory: { en: 'Page history', ja: 'ページの変更履歴', zh: '页面更改历史' },
+  gitDiffOpenHistory: {
+    en: 'Show the history of this page',
+    ja: 'このページの変更履歴を表示する',
+    zh: '显示此页面的更改历史',
+  },
+  gitDiffHistoryEntry: {
+    en: 'History of this page ({{count}} changes, last on {{date}})',
+    ja: 'このページの変更履歴（{{count}} 件、最終更新 {{date}}）',
+    zh: '此页面的更改历史（{{count}} 处更改，最近更新于 {{date}}）',
+  },
+  gitDiffHistoryAddedOnly: {
+    en: 'History of this page (added on {{date}})',
+    ja: 'このページの変更履歴（{{date}} に追加）',
+    zh: '此页面的更改历史（{{date}} 添加）',
+  },
+  gitDiffAdded: { en: 'Page added', ja: 'ページを追加しました', zh: '页面已添加' },
+  gitDiffHistoryMore: {
+    en: '{{count}} older changes are not listed.',
+    ja: 'これより古い変更が {{count}} 件あります。',
+    zh: '还有 {{count}} 处更早的更改未列出。',
+  },
 };

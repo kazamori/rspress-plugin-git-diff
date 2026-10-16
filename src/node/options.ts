@@ -1,5 +1,17 @@
 export type CommitMessageMode = 'full' | 'strip-refs' | 'none';
 
+/** Where the plugin places the entries that open the history of a page. */
+export type PageHistoryEntry = 'footer' | 'nav';
+
+export interface PageHistoryOptions {
+  /**
+   * Entries the plugin places: `footer` before the doc footer, `nav` in the
+   * navigation bar. With none, the history opens only from a URL with `?history`
+   * or from the components a theme places.
+   */
+  entries?: PageHistoryEntry[];
+}
+
 export interface GitDiffPluginOptions {
   /** URL of the recent changes page, placed after the version and language prefixes. */
   changesRoutePath?: string;
@@ -25,10 +37,19 @@ export interface GitDiffPluginOptions {
   /** References removed in the `strip-refs` mode. Must have the global flag. */
   issueRefPattern?: RegExp;
   showAuthor?: boolean;
+  /** The history of each page, opened in a drawer. `false` turns it off. */
+  pageHistory?: boolean | PageHistoryOptions;
+  /** Number of revisions listed in the history of a page. */
+  maxPageRevisions?: number;
 }
 
-export type ResolvedOptions = Required<Omit<GitDiffPluginOptions, 'since' | 'tagPattern'>> &
-  Pick<GitDiffPluginOptions, 'since' | 'tagPattern'>;
+export type ResolvedOptions = Required<
+  Omit<GitDiffPluginOptions, 'since' | 'tagPattern' | 'pageHistory'>
+> &
+  Pick<GitDiffPluginOptions, 'since' | 'tagPattern'> & {
+    /** Undefined when the history of pages is turned off. */
+    pageHistory: Required<PageHistoryOptions> | undefined;
+  };
 
 // Matches `#123`, `group/project#45` and `!67` as separate words, so that text
 // such as `C#7` or `Wow!1` stays.
@@ -57,7 +78,18 @@ export function resolveOptions(options: GitDiffPluginOptions = {}): ResolvedOpti
     commitMessage: options.commitMessage ?? 'strip-refs',
     issueRefPattern,
     showAuthor: options.showAuthor ?? false,
+    pageHistory: resolvePageHistory(options.pageHistory ?? true),
+    maxPageRevisions: options.maxPageRevisions ?? 20,
   };
+}
+
+function resolvePageHistory(
+  option: boolean | PageHistoryOptions,
+): Required<PageHistoryOptions> | undefined {
+  if (option === false) {
+    return undefined;
+  }
+  return { entries: option === true ? ['footer'] : (option.entries ?? ['footer']) };
 }
 
 /**

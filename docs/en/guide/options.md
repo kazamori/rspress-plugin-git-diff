@@ -22,6 +22,8 @@ pluginGitDiff({
 | `since` | none | Write only the history after this tag or commit |
 | `tagPattern` | none | Only tags that match can be used in `?diff=` |
 | `showAuthor` | `false` | Show the author name of each commit |
+| `pageHistory` | `true` | The [history of each page](./page-history); `false` turns it off, and `{ entries }` chooses where its entries go: `'footer'`, `'nav'`, or none (default `['footer']`) |
+| `maxPageRevisions` | `20` | Number of revisions listed in the history of a page |
 
 ## Commit messages
 

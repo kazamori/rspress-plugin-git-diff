@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { defineConfig } from '@rspress/core';
-import { pluginGitDiff } from '../dist/index.js';
+import { type PageHistoryEntry, pluginGitDiff } from '../dist/index.js';
 
 // The docs live in example/site, a separate git repository created by
 // `bun run example:setup`, so that the history is the same on every machine.
@@ -18,6 +18,15 @@ export default defineConfig({
       // Small enough that the long change in the sample history is collapsed.
       maxDiffLines: 20,
       showAuthor: true,
+      // Both entries to the history of a page by default. To try others, list
+      // them in GIT_DIFF_HISTORY_ENTRIES, such as `nav`, or leave it empty.
+      pageHistory: { entries: historyEntries() },
     }),
   ],
 });
+
+function historyEntries(): PageHistoryEntry[] {
+  const value = process.env.GIT_DIFF_HISTORY_ENTRIES;
+  if (value === undefined) return ['footer', 'nav'];
+  return value.split(',').filter((entry): entry is PageHistoryEntry => entry === 'footer' || entry === 'nav');
+}
