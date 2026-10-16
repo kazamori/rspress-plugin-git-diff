@@ -135,4 +135,5 @@ Still, do not write tests or scripts that depend on hash values; look commits up
 
 - Write commit messages and pull request descriptions in English.
 - Mention related issues in the body, such as `Refs #1`.
-- Do not commit to `main` directly; create a branch.
+- Small bug fixes that do not change the specification may be committed to `main` directly, without a pull request; close the issue with `Fixes #N` in the body.
+- For other changes, such as new options, changed defaults, the data format or new features, create a branch and open a pull request.
