@@ -9,7 +9,7 @@
     "repository": {
       "url": "git@github.com:kazamori/rspress-plugin-git-diff.git",
       "link_mode": "local-only",
-      "revision": "24d7a8b3f74bd3d22af4582b38de50a73ae6b671"
+      "revision": "deb2f1f64cc4a43a629fae322b1ce702287bfa62"
     }
   },
   "components": [
@@ -29,8 +29,8 @@
       "sources": [
         {
           "path": "src/node/index.ts",
-          "line": 26,
-          "end_line": 119,
+          "line": 28,
+          "end_line": 140,
           "label": "pluginGitDiff hooks"
         }
       ]
@@ -57,8 +57,8 @@
         },
         {
           "path": "src/node/index.ts",
-          "line": 70,
-          "end_line": 73,
+          "line": 78,
+          "end_line": 81,
           "label": "registered under markdown"
         }
       ]
@@ -79,8 +79,8 @@
       "sources": [
         {
           "path": "src/node/collect.ts",
-          "line": 46,
-          "end_line": 56,
+          "line": 50,
+          "end_line": 60,
           "label": "git log call"
         }
       ]
@@ -101,8 +101,8 @@
       "sources": [
         {
           "path": "src/node/collect.ts",
-          "line": 27,
-          "end_line": 90,
+          "line": 30,
+          "end_line": 114,
           "label": "collectGitData"
         },
         {
@@ -157,15 +157,15 @@
         },
         {
           "path": "src/node/collect.ts",
-          "line": 82,
-          "end_line": 88,
+          "line": 103,
+          "end_line": 107,
           "label": "writes the files"
         },
         {
           "path": "src/node/index.ts",
-          "line": 74,
-          "end_line": 79,
-          "label": "copied into the output"
+          "line": 113,
+          "end_line": 139,
+          "label": "copied into the output after the build"
         }
       ]
     },
@@ -225,8 +225,8 @@
         },
         {
           "path": "src/node/index.ts",
-          "line": 85,
-          "end_line": 95,
+          "line": 88,
+          "end_line": 98,
           "label": "addPages"
         }
       ]
@@ -259,8 +259,8 @@
         },
         {
           "path": "src/node/index.ts",
-          "line": 54,
-          "end_line": 69,
+          "line": 62,
+          "end_line": 76,
           "label": "registered as a global component"
         }
       ]
