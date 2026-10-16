@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@rstest/core';
-import { listPageHistory, withHistoryParam, withoutHistoryParam } from '../src/runtime/pageHistory';
+import { listPageHistory, withHistoryParam, withoutHistoryParam } from '../src/runtime/historyList';
 import type { HiddenReason, PageIndex } from '../src/runtime/types';
 
 const index = (...hidden: (HiddenReason | undefined)[]): PageIndex => ({

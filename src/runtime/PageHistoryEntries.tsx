@@ -8,7 +8,7 @@ import {
   type PageHistoryList,
   withHistoryParam,
   withoutHistoryParam,
-} from './pageHistory';
+} from './historyList';
 import { useText } from './text';
 import { useAsync } from './useAsync';
 

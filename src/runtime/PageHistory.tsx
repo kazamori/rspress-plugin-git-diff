@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { queryHash, shortHash, splitCommitDate } from './commit';
 import { DiffView, FormatToggle } from './DiffView';
-import type { PageHistoryList } from './pageHistory';
+import type { PageHistoryList } from './historyList';
 import {
   PageHistoryButton,
   PageHistoryLink,
