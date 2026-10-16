@@ -16,7 +16,7 @@ pluginGitDiff({
 | `changesTitle` | 言語ごとの既定の題 | 最近の変更のページの題。`{ en: 'What changed', ja: '変更履歴' }` の形で渡す |
 | `changesInLlms` | `false` | サイトで `llms` を有効にしたとき、最近の変更のページを `llms.txt` に載せる。[最近の変更](./recent-changes#llmstxt)を参照 |
 | `maxCommits` | `50` | 最近の変更のページに並べるコミットの数 |
-| `maxDiffLines` | `200` | 最近の変更のページで、変更した行がこれを超える差分は折りたたむ |
+| `maxDiffLines` | `50` | 最近の変更のページで、変更した行がこれを超える差分は折りたたむ。追加した行と削除した行を合わせて数えるため、書き換えた行は 2 行と数える |
 | `commitMessage` | `'strip-refs'` | コミットの要約行の示し方（後述） |
 | `issueRefPattern` | `#123`、`group/project#45`、`!67` | `strip-refs` で取り除く参照のパターン。`g` フラグが必要 |
 | `since` | なし | このタグかコミットより後の履歴だけを書き出す |

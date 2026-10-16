@@ -16,7 +16,7 @@ pluginGitDiff({
 | `changesTitle` | per language | Title of the recent changes page, such as `{ en: 'What changed', ja: '変更履歴' }` |
 | `changesInLlms` | `false` | List the recent changes pages in `llms.txt` when the site sets `llms`; see [Recent changes](./recent-changes#llmstxt) |
 | `maxCommits` | `50` | Number of commits on the recent changes page |
-| `maxDiffLines` | `200` | Diffs with more changed lines than this are collapsed on the recent changes page |
+| `maxDiffLines` | `50` | Diffs with more changed lines than this are collapsed on the recent changes page. Added and removed lines count together, so a rewritten line counts as 2 |
 | `commitMessage` | `'strip-refs'` | How to show commit subjects; see below |
 | `issueRefPattern` | `#123`, `group/project#45`, `!67` | References removed in the `strip-refs` mode; needs the `g` flag |
 | `since` | none | Write only the history after this tag or commit |
