@@ -1,6 +1,6 @@
 import { withBase } from '@rspress/core/runtime';
-import { blobPath, DATA_DIR, logIndexPath, pageIndexPath } from './paths';
-import type { LogIndex, PageIndex } from './types';
+import { blobPath, DATA_DIR, logIndexPath, pageIndexPath, tagIndexPath } from './paths';
+import type { LogIndex, PageIndex, TagIndex } from './types';
 
 const cache = new Map<string, Promise<unknown>>();
 
@@ -33,6 +33,14 @@ function loadJson<T>(relative: string): Promise<T> {
 /** Loads the history of a page; rejects with `NotFoundError` when it has none. */
 export function loadPageIndex(routePath: string): Promise<PageIndex> {
   return loadJson(pageIndexPath(routePath));
+}
+
+/** Loads the names of every tag written; empty when the list cannot be read. */
+export function loadTagNames(): Promise<Set<string>> {
+  return loadJson<TagIndex>(tagIndexPath()).then(
+    (index) => new Set(index.tags),
+    () => new Set(),
+  );
 }
 
 /** Loads the recent changes of one version and language. */

@@ -1,6 +1,6 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { blobPath, logIndexPath, pageIndexPath } from '../runtime/paths';
+import { blobPath, logIndexPath, pageIndexPath, tagIndexPath } from '../runtime/paths';
 import type { LogIndex } from '../runtime/types';
 import { blobsToRead, buildSiteData, type TagSnapshot } from './data';
 import { readBlobs, runGit, testGit } from './git';
@@ -114,6 +114,7 @@ export async function collectGitData(input: CollectInput): Promise<Map<string, L
   await Promise.all([
     ...data.pages.map((page) => write(pageIndexPath(page.routePath), JSON.stringify(page))),
     ...[...data.logs].map(([key, log]) => write(logIndexPath(key), JSON.stringify(log))),
+    write(tagIndexPath(), JSON.stringify(data.tags)),
     ...[...data.blobs].map((hash) => write(blobPath(hash), allContents.get(hash) ?? '')),
   ]);
   stats.step('write files', {

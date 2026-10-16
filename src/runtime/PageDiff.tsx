@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, usePage } from '@rspress/core/runtime';
 import { useCallback, useState } from 'react';
 import { DiffBar } from './DiffBar';
-import { loadPageIndex, NotFoundError } from './fetch';
+import { loadPageIndex, loadTagNames, NotFoundError } from './fetch';
 import { type DiffTarget, type ResolveResult, resolveDiffQuery } from './resolve';
 import { SourcePanel } from './SourcePanel';
 import { type AsyncState, useAsync } from './useAsync';
@@ -35,9 +35,9 @@ function QueriedPageDiff({ query }: { query: string }) {
 
   const loaded = useAsync(
     async () => {
-      const index = await loadPageIndex(routePath);
+      const [index, tagNames] = await Promise.all([loadPageIndex(routePath), loadTagNames()]);
       const head = index.revisions[0]?.blob;
-      return head ? { result: resolveDiffQuery(query, index), head } : undefined;
+      return head ? { result: resolveDiffQuery(query, index, tagNames), head } : undefined;
     },
     [routePath, query],
   );

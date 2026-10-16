@@ -4,7 +4,8 @@
 
 The plugin writes the history to `git-diff-data/` in the build output.
 
-- `pages/`: the revisions of each page and the page version at each tag
+- `pages/`: the revisions of each page and the page version at each tag where the page existed
+- `tags.json`: the names of the tags written
 - `log/`: the recent commits of each version and language
 - `blobs/`: the source of every page version that these refer to
 

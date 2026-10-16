@@ -13,8 +13,10 @@ const page: PageIndex = {
     revision('bbbb2222', 'blob-a', 'blob-b'),
     revision('bbbb1111', null, 'blob-a'),
   ],
-  tags: { 'v1.0': 'blob-b', 'v0.1': null },
+  tags: { 'v1.0': 'blob-b' },
 };
+// v0.1 is a tag from before the page existed, so the page index leaves it out.
+const tagNames = new Set(['v1.0', 'v0.1']);
 
 describe('resolveDiffQuery', () => {
   test.each([
@@ -29,7 +31,7 @@ describe('resolveDiffQuery', () => {
     { query: 'v0.1..bbbb2222', from: null, to: 'blob-b', name: 'a tag without the page compares with nothing' },
     { query: 'bbbb2222..v1.0', from: 'blob-b', to: 'blob-b', name: 'a range without changes has equal ends' },
   ])('$name', ({ query, from, to }) => {
-    const result = resolveDiffQuery(query, page);
+    const result = resolveDiffQuery(query, page, tagNames);
     expect(result.ok && result.target).toMatchObject({ from, to });
   });
 
@@ -42,7 +44,7 @@ describe('resolveDiffQuery', () => {
     { query: 'v9.9..HEAD', error: { kind: 'not-found', rev: 'v9.9' }, name: 'an unknown tag' },
     { query: 'bbbb', error: { kind: 'ambiguous', rev: 'bbbb' }, name: 'a prefix of two hashes' },
   ])('rejects $name', ({ query, error }) => {
-    const result = resolveDiffQuery(query, page);
+    const result = resolveDiffQuery(query, page, tagNames);
     expect(!result.ok && result.error).toMatchObject(error);
   });
 });
