@@ -1,9 +1,11 @@
 {
   "name": "@kazamori/rspress-plugin-git-diff",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Rspress plugin that shows git history and diffs of pages",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://kazamori.github.io/rspress-plugin-git-diff/",
+  "bugs": "https://github.com/kazamori/rspress-plugin-git-diff/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kazamori/rspress-plugin-git-diff.git"
@@ -30,6 +32,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rslib build",
     "dev": "rslib build --watch",

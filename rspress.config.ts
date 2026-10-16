@@ -12,6 +12,12 @@ export default defineConfig({
   title: 'rspress-plugin-git-diff',
   description: 'Show the git history and diffs of your Rspress pages',
   lang: 'en',
+  // The site built from main documents the version under development. Released
+  // versions can be added next to it, as copies of docs/dev/.
+  multiVersion: {
+    default: 'dev',
+    versions: ['dev'],
+  },
   locales: [
     {
       lang: 'en',
@@ -38,5 +44,5 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [pluginGitDiff()],
+  plugins: [pluginGitDiff({ tagPattern: /^v\d/ })],
 });

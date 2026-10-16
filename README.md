@@ -32,10 +32,10 @@ Build in a clone with the full history and tags (for GitHub Actions, `fetch-dept
 ## Documentation
 
 The documentation is an Rspress site in [`docs/`](./docs), in English and Japanese, and it uses this plugin itself.
-It is published at <https://kazamori.github.io/rspress-plugin-git-diff/>.
+It is published at <https://kazamori.github.io/rspress-plugin-git-diff/> from `main`, as the `dev` version: it describes the plugin under development, which may be ahead of the latest release on npm.
 
-- Guide: [getting started](./docs/en/guide/getting-started.md), [on-page diff](./docs/en/guide/on-page-diff.md), [recent changes](./docs/en/guide/recent-changes.md), [options](./docs/en/guide/options.md), [publishing](./docs/en/guide/publishing.md)
-- [Architecture](./docs/en/architecture.mdx), with diagrams generated from [`docs/architecture/`](./docs/architecture)
+- Guide: [getting started](./docs/dev/en/guide/getting-started.md), [on-page diff](./docs/dev/en/guide/on-page-diff.md), [recent changes](./docs/dev/en/guide/recent-changes.md), [page history](./docs/dev/en/guide/page-history.md), [options](./docs/dev/en/guide/options.md), [publishing](./docs/dev/en/guide/publishing.md)
+- [Architecture](./docs/dev/en/architecture.mdx), with diagrams generated from [`docs/architecture/`](./docs/architecture)
 
 To browse it locally:
 
@@ -64,6 +64,62 @@ bun run example:dev
 ```
 
 See [AGENTS.md](./AGENTS.md) for the layout of the source and the constraints to keep when changing it.
+
+## Releasing
+
+Releases are published to npm as [`@kazamori/rspress-plugin-git-diff`](https://www.npmjs.com/package/@kazamori/rspress-plugin-git-diff) from a local clone.
+
+You need an npm account that is a member of the [kazamori organization](https://www.npmjs.com/org/kazamori) with permission to publish, with two-factor authentication enabled.
+Log in once and check the account:
+
+```sh
+npm login
+npm whoami
+```
+
+1. Set the version on a branch, and merge it through a pull request:
+
+   ```sh
+   git switch -c release/0.5.0
+   npm version 0.5.0 --no-git-tag-version
+   git commit -am "Release 0.5.0"
+   ```
+
+2. On an up-to-date `main` without local changes, install the dependencies and run the end-to-end tests:
+
+   ```sh
+   git switch main
+   git pull
+   bun install --frozen-lockfile
+   bun run e2e
+   ```
+
+3. Check what goes into the package: only `dist/`, `README.md`, `LICENSE` and `package.json`.
+
+   ```sh
+   npm pack --dry-run
+   ```
+
+4. Publish. `prepublishOnly` runs `typecheck`, `test` and `build` first, and `publishConfig` makes the scoped package public. npm asks for a one-time password.
+
+   ```sh
+   npm publish
+   ```
+
+5. Tag the published commit and create a GitHub release:
+
+   ```sh
+   git tag -a v0.5.0 -m "v0.5.0"
+   git push origin v0.5.0
+   gh release create v0.5.0 --title v0.5.0 --generate-notes
+   ```
+
+6. Check the published version, and rebuild the documentation site so that the new tag can be used in `?diff=` there (pushing a tag does not trigger the Pages workflow):
+
+   ```sh
+   npm view @kazamori/rspress-plugin-git-diff version
+   gh workflow run pages.yml
+   ```
 
 ## License
 
