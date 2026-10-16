@@ -19,8 +19,16 @@ export interface PageIndex {
   routePath: string;
   /** Newest first. */
   revisions: PageRevision[];
-  /** Tag name to the page blob at that tag; null when the page did not exist. */
-  tags: Record<string, string | null>;
+  /**
+   * Tag name to the page blob at that tag. Tags at which the page did not exist
+   * are left out; `TagIndex` lists every tag written.
+   */
+  tags: Record<string, string>;
+}
+
+/** Every tag written, so that a tag missing from a page index still resolves. */
+export interface TagIndex {
+  tags: string[];
 }
 
 export type LogChangeStatus = 'modified' | 'renamed' | 'deleted';

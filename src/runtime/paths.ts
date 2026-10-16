@@ -18,6 +18,11 @@ export function blobPath(hash: string): string {
   return `blobs/${hash}.txt`;
 }
 
+/** Path of the list of tags, relative to `DATA_DIR`. */
+export function tagIndexPath(): string {
+  return 'tags.json';
+}
+
 export function logIndexPath(scopeKey: string): string {
   return `log/${scopeKey}.json`;
 }

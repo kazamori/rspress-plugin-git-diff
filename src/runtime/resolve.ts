@@ -27,8 +27,14 @@ const HASH_PATTERN = /^[0-9a-f]{4,64}$/i;
  * Resolves the `diff` query parameter against a page's history.
  * `<rev>` compares the page before and after that revision, and
  * `<from>..<to>` compares two versions; an empty `<to>` means HEAD.
+ * `tagNames` lists every tag written, including those at which the page did
+ * not exist.
  */
-export function resolveDiffQuery(query: string, page: PageIndex): ResolveResult {
+export function resolveDiffQuery(
+  query: string,
+  page: PageIndex,
+  tagNames: ReadonlySet<string> = new Set(),
+): ResolveResult {
   const spec = query.trim();
   if (spec === '') {
     return { ok: false, error: { kind: 'syntax' } };
@@ -36,7 +42,7 @@ export function resolveDiffQuery(query: string, page: PageIndex): ResolveResult 
 
   const separator = spec.indexOf('..');
   if (separator === -1) {
-    return resolveSingle(spec, page);
+    return resolveSingle(spec, page, tagNames);
   }
 
   const fromSpec = spec.slice(0, separator);
@@ -44,19 +50,19 @@ export function resolveDiffQuery(query: string, page: PageIndex): ResolveResult 
   if (fromSpec === '' || toSpec.includes('..')) {
     return { ok: false, error: { kind: 'syntax' } };
   }
-  const from = resolveRev(fromSpec, page);
+  const from = resolveRev(fromSpec, page, tagNames);
   if (!from.ok) {
     return from;
   }
-  const to = resolveRev(toSpec, page);
+  const to = resolveRev(toSpec, page, tagNames);
   if (!to.ok) {
     return to;
   }
   return { ok: true, target: { from: from.blob, to: to.blob } };
 }
 
-function resolveSingle(spec: string, page: PageIndex): ResolveResult {
-  const rev = resolveRev(spec, page);
+function resolveSingle(spec: string, page: PageIndex, tagNames: ReadonlySet<string>): ResolveResult {
+  const rev = resolveRev(spec, page, tagNames);
   if (!rev.ok) {
     return rev;
   }
@@ -73,7 +79,7 @@ function resolveSingle(spec: string, page: PageIndex): ResolveResult {
   };
 }
 
-function resolveRev(spec: string, page: PageIndex): RevResult {
+function resolveRev(spec: string, page: PageIndex, tagNames: ReadonlySet<string>): RevResult {
   if (spec === 'HEAD') {
     const latest = page.revisions[0];
     if (!latest) {
@@ -82,7 +88,11 @@ function resolveRev(spec: string, page: PageIndex): RevResult {
     return { ok: true, blob: latest.blob, revision: latest };
   }
   if (Object.hasOwn(page.tags, spec)) {
-    return { ok: true, blob: page.tags[spec] ?? null };
+    return { ok: true, blob: page.tags[spec] };
+  }
+  // A tag at which the page did not exist.
+  if (tagNames.has(spec)) {
+    return { ok: true, blob: null };
   }
   if (!HASH_PATTERN.test(spec)) {
     return { ok: false, error: { kind: 'not-found', rev: spec } };

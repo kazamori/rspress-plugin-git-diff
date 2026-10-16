@@ -6,6 +6,7 @@ import type {
   LogIndex,
   PageIndex,
   PageRevision,
+  TagIndex,
 } from '../runtime/types';
 import { buildHistories, type FileHistory } from './history';
 import type { Commit, FileChange } from './log';
@@ -42,6 +43,8 @@ export interface SiteData {
   logs: Map<string, LogIndex>;
   /** Blobs the pages and logs refer to. */
   blobs: Set<string>;
+  /** Every tag written, including those at which a page did not exist. */
+  tags: TagIndex;
 }
 
 /** Blobs whose contents `buildSiteData` needs, for titles and the format check. */
@@ -96,7 +99,7 @@ export function buildSiteData(input: DataInput): SiteData {
     }
   }
 
-  return { pages, logs, blobs };
+  return { pages, logs, blobs, tags: { tags: input.tags.map((tag) => tag.name) } };
 }
 
 function buildPageIndex(history: FileHistory, routePath: string, input: BuildContext): PageIndex {
@@ -113,10 +116,13 @@ function buildPageIndex(history: FileHistory, routePath: string, input: BuildCon
     });
   }
 
-  const tags: Record<string, string | null> = {};
+  // Tags at which the page did not exist are left out; on a site with many
+  // tags, they would make up a large part of every index.
+  const tags: Record<string, string> = {};
   for (const tag of input.tags) {
     const path = history.paths.find((p) => tag.files.has(p));
-    tags[tag.name] = path ? (tag.files.get(path) ?? null) : null;
+    const blob = path && tag.files.get(path);
+    if (blob) tags[tag.name] = blob;
   }
   return { routePath, revisions, tags };
 }
