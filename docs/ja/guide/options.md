@@ -14,6 +14,7 @@ pluginGitDiff({
 | --- | --- | --- |
 | `changesRoutePath` | `'/changes'` | 最近の変更のページの URL。バージョンと言語の接頭辞の後に付く |
 | `changesTitle` | 言語ごとの既定の題 | 最近の変更のページの題。`{ en: 'What changed', ja: '変更履歴' }` の形で渡す |
+| `changesInLlms` | `false` | サイトで `llms` を有効にしたとき、最近の変更のページを `llms.txt` に載せる。[最近の変更](./recent-changes#llmstxt)を参照 |
 | `maxCommits` | `50` | 最近の変更のページに並べるコミットの数 |
 | `maxDiffLines` | `200` | 最近の変更のページで、変更した行がこれを超える差分は折りたたむ |
 | `commitMessage` | `'strip-refs'` | コミットの要約行の示し方（後述） |

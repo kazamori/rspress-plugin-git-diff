@@ -1,6 +1,7 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { blobPath, logIndexPath, pageIndexPath } from '../runtime/paths';
+import type { LogIndex } from '../runtime/types';
 import { blobsToRead, buildSiteData, type TagSnapshot } from './data';
 import { readBlobs, runGit, testGit } from './git';
 import { LOG_FORMAT, parseLog } from './log';
@@ -19,15 +20,18 @@ export interface CollectInput {
   warn: (message: string) => void;
 }
 
-/** Reads the git history of the docs root and writes the data files. */
-export async function collectGitData(input: CollectInput): Promise<void> {
+/**
+ * Reads the git history of the docs root and writes the data files. Returns the
+ * logs keyed by scope key, empty when the docs root is not in a git repository.
+ */
+export async function collectGitData(input: CollectInput): Promise<Map<string, LogIndex>> {
   await rm(input.outDir, { recursive: true, force: true });
   await mkdir(input.outDir, { recursive: true });
 
   const { docsDir, options, warn } = input;
   if (!(await testGit(docsDir, ['rev-parse', '--is-inside-work-tree']))) {
     warn(`${docsDir} is not in a git repository; no history is shown`);
-    return;
+    return new Map();
   }
   if ((await runGit(docsDir, ['rev-parse', '--is-shallow-repository'])).trim() === 'true') {
     warn('the repository is a shallow clone, so the history may be cut off; fetch the full history (for example, fetch-depth: 0)');
@@ -82,6 +86,7 @@ export async function collectGitData(input: CollectInput): Promise<void> {
       writeText(input.outDir, blobPath(hash), allContents.get(hash) ?? ''),
     ),
   ]);
+  return data.logs;
 }
 
 /** Lists the directories directly under the docs root at `HEAD`. */

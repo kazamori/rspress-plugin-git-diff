@@ -44,6 +44,7 @@
     "@rspress/core": "^2.0.0"
   },
   "devDependencies": {
+    "@rsbuild/core": "^2.2.10",
     "@rsbuild/plugin-react": "^2.1.1",
     "@rslib/core": "^1.0.3",
     "@rspress/core": "^2.0.23",

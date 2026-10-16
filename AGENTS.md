@@ -41,6 +41,7 @@ Rspress calls the hooks in this order: `config`, `addPages`, `routeGenerated`, `
 2. `routeGenerated` records the route of every page file under the docs root.
 3. `beforeBuild` calls `collect.ts`, which reads the history and writes the data. `data.ts` builds the data with pure functions and does not touch git.
 4. While Markdown compiles, the remark and rehype plugins in `sourceLines.ts` add the source lines and the page route to rendered elements.
+5. With `llms`, the Rsbuild plugin in `llms.ts` rewrites what Rspress wrote for the recent changes pages (their Markdown, `llms.txt` and `llms-full.txt`) after Rspress has written them.
 
 ### Browser entry points
 
@@ -52,7 +53,7 @@ Rspress calls the hooks in this order: `config`, `addPages`, `routeGenerated`, `
 
 ### Files shared by both sides
 
-`src/node/` imports some files of `src/runtime/` (`types.ts`, `paths.ts`, `attributes.ts`, `i18n.ts`).
+`src/node/` imports some files of `src/runtime/` (`types.ts`, `paths.ts`, `attributes.ts`, `i18n.ts`, `commit.ts`).
 These files must not import browser-only modules such as `@rspress/core/runtime` or React; otherwise browser code ends up in the Node bundle.
 That is why `useText` lives in `text.ts` rather than `i18n.ts`.
 After a change, check that `dist/index.js` imports only Node built-in modules.
