@@ -30,7 +30,20 @@ export function extractTitle(content: string): string | undefined {
   }
   const body = frontmatter ? content.slice(frontmatter[0].length) : content;
   const heading = /^#\s+(.+?)\s*#*\s*$/m.exec(body);
-  return heading?.[1];
+  return heading ? plainHeading(heading[1]) : undefined;
+}
+
+/** Removes a custom anchor such as `{#id}` and the syntax of inline Markdown. */
+function plainHeading(heading: string): string | undefined {
+  const text = heading
+    .replace(/\s*\{#[^}]*\}$/, '')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/(`+)(.+?)\1/g, '$2')
+    .replace(/(\*\*|__)(?=\S)(.+?)(?<=\S)\1/g, '$2')
+    .replace(/(?<![\w*])\*(?=\S)(.+?)(?<=\S)\*(?![\w*])/g, '$1')
+    .replace(/(?<!\w)_(?=\S)(.+?)(?<=\S)_(?!\w)/g, '$1')
+    .trim();
+  return text || undefined;
 }
 
 function unquote(value: string): string {

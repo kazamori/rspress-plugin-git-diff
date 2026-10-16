@@ -127,6 +127,11 @@ describe('extractTitle', () => {
     { content: '---\ntitle: "設定"\n---\n\n# 見出し\n', expected: '設定' },
     { content: '---\nsidebar: false\n---\n\n# 見出し\n', expected: '見出し' },
     { content: 'Intro\n\n# Install #\n', expected: 'Install' },
+    { content: '# Options {#options}\n', expected: 'Options' },
+    { content: '# The `base` option {#base}\n', expected: 'The base option' },
+    { content: '# **Bold**, *em* and _em_\n', expected: 'Bold, em and em' },
+    { content: '# See [Options](./options.md)\n', expected: 'See Options' },
+    { content: '# snake_case_name and 2*3*4\n', expected: 'snake_case_name and 2*3*4' },
     { content: 'No heading\n', expected: undefined },
   ])('reads $expected', ({ content, expected }) => {
     expect(extractTitle(content)).toBe(expected);
