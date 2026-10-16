@@ -20,7 +20,7 @@ pluginGitDiff({
 | `commitMessage` | `'strip-refs'` | コミットの要約行の示し方（後述） |
 | `issueRefPattern` | `#123`、`group/project#45`、`!67` | `strip-refs` で取り除く参照のパターン。`g` フラグが必要 |
 | `since` | なし | このタグかコミットより後の履歴だけを書き出す |
-| `tagPattern` | なし | `?diff=` で使えるタグを、一致するものに絞る |
+| `tagPattern` | なし | `?diff=` で使えるタグと書き出すタグを、一致するものに絞る。[大きなサイト](./publishing#大きなサイト)を参照 |
 | `showAuthor` | `false` | コミットの作者名を表示する |
 | `pageHistory` | `true` | [ページの変更履歴](./page-history)。`false` で止める。`{ entries }` で入り口の置き場所を `'footer'`、`'nav'` から選ぶ（既定値は `['footer']`、空なら置かない） |
 | `maxPageRevisions` | `20` | ページの変更履歴に並べる版の数 |

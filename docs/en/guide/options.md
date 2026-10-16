@@ -20,7 +20,7 @@ pluginGitDiff({
 | `commitMessage` | `'strip-refs'` | How to show commit subjects; see below |
 | `issueRefPattern` | `#123`, `group/project#45`, `!67` | References removed in the `strip-refs` mode; needs the `g` flag |
 | `since` | none | Write only the history after this tag or commit |
-| `tagPattern` | none | Only tags that match can be used in `?diff=` |
+| `tagPattern` | none | Only tags that match can be used in `?diff=` and are written; see [Large sites](./publishing#large-sites) |
 | `showAuthor` | `false` | Show the author name of each commit |
 | `pageHistory` | `true` | The [history of each page](./page-history); `false` turns it off, and `{ entries }` chooses where its entries go: `'footer'`, `'nav'`, or none (default `['footer']`) |
 | `maxPageRevisions` | `20` | Number of revisions listed in the history of a page |

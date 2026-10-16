@@ -32,9 +32,16 @@ Fetch the full history and the tags before building.
 The plugin reads committed history only.
 Pages added or edited without a commit have no history until they are committed.
 
-## Build statistics
+## Large sites
 
-On a large site, set `RSPRESS_GIT_DIFF_STATS=1` to see what reading the history costs.
+The output grows with the history.
+`git-diff-data/` holds every version of every page in the history, and the index of each page records the version of the page at every tag.
+On the Rspack documentation (about 370 pages, 1,200 commits and 400 tags), it was about 90 MB.
+
+- **Set [`tagPattern`](./options)** to the tags readers should use in `?diff=`. Without it, every tag in the repository is recorded for every page, including tags of packages in a monorepo. The build warns when it writes more than 20 tags without `tagPattern`.
+- **Set [`since`](./options)** to leave out the history before a tag or commit, such as the last major release. This removes the old versions themselves, which make up most of the output.
+
+To see what reading the history costs, set `RSPRESS_GIT_DIFF_STATS=1`.
 The build then prints the time, the heap in use and the counts of each step: reading the log, reading the page contents, building the data and writing the files.
 
 ```sh
