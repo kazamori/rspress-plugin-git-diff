@@ -39,7 +39,7 @@ See [Options](./options) to change them.
 
 Build or start the site, then open these URLs.
 
-- `/changes` lists the recent commits with their diffs. See [Recent changes](./recent-changes).
+- `/changes` lists the recent commits with their diffs. See [Recent changes](./recent-changes), which also shows how to [link to it from the navigation](./recent-changes#link-to-the-page); the plugin does not add the link.
 - Any page with `?diff=HEAD`, such as `/guide/getting-started?diff=HEAD`, marks the latest change of that page on the page itself. See [On-page diff](./on-page-diff).
 
 This site uses the plugin too.
