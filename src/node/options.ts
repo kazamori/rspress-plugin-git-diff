@@ -12,7 +12,10 @@ export interface GitDiffPluginOptions {
   changesInLlms?: boolean;
   /** Number of commits on the recent changes page. */
   maxCommits?: number;
-  /** Diffs longer than this are collapsed on the recent changes page. */
+  /**
+   * Diffs with more changed lines than this are collapsed on the recent changes
+   * page. Added and removed lines count together, so a rewritten line counts as 2.
+   */
   maxDiffLines?: number;
   /** Versions older than this tag or commit are not written out. */
   since?: string;
@@ -48,7 +51,7 @@ export function resolveOptions(options: GitDiffPluginOptions = {}): ResolvedOpti
     changesTitle: { ...DEFAULT_CHANGES_TITLE, ...options.changesTitle },
     changesInLlms: options.changesInLlms ?? false,
     maxCommits: options.maxCommits ?? 50,
-    maxDiffLines: options.maxDiffLines ?? 200,
+    maxDiffLines: options.maxDiffLines ?? 50,
     since: options.since,
     tagPattern: options.tagPattern && withoutState(options.tagPattern),
     commitMessage: options.commitMessage ?? 'strip-refs',
