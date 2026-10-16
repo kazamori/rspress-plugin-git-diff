@@ -9,6 +9,12 @@ import type { ResolvedOptions } from './options';
 import { createStats } from './stats';
 import type { SiteLayout } from './scope';
 
+/**
+ * More tags than this without `tagPattern` suggest tags that are not releases
+ * of the docs, such as tags of packages in a monorepo.
+ */
+const MANY_TAGS = 20;
+
 export interface CollectInput {
   /** Absolute path of the docs root. */
   docsDir: string;
@@ -63,6 +69,11 @@ export async function collectGitData(input: CollectInput): Promise<Map<string, L
 
   const rootDirs = await readRootDirs(repoRoot, docsPrefix);
   const tags = await readTags(repoRoot, pathspec, options);
+  if (!options.tagPattern && tags.length > MANY_TAGS) {
+    warn(
+      `${tags.length} tags are written into the index of every page; set tagPattern to the tags readers should use in ?diff=, such as /^v\\d/`,
+    );
+  }
   const contents = await readBlobs(repoRoot, blobsToRead(commits));
   stats.step('read blobs', {
     tags: tags.length,

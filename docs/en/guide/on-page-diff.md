@@ -34,7 +34,7 @@ Without tags, ranges are of little use.
 - **Set [`tagPattern`](./options)** to the release tags, such as `/^v\d/`, so that other tags in the repository cannot be used in `?diff=`.
 
 The tags are read when the site is built, so a new tag works on the site after the next build, not when it is pushed.
-With [`since`](./options), tags older than `since` are not written.
+With [`since`](./options), only tags that descend from `since` are written (see [Large sites](./publishing#large-sites)).
 
 ## How changes are marked
 
