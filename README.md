@@ -31,6 +31,7 @@ Build in a clone with the full history and tags (for GitHub Actions, `fetch-dept
 ## Documentation
 
 The documentation is an Rspress site in [`docs/`](./docs), in English and Japanese, and it uses this plugin itself.
+It is published at <https://kazamori.github.io/rspress-plugin-git-diff/>.
 
 - Guide: [getting started](./docs/en/guide/getting-started.md), [on-page diff](./docs/en/guide/on-page-diff.md), [recent changes](./docs/en/guide/recent-changes.md), [options](./docs/en/guide/options.md), [publishing](./docs/en/guide/publishing.md)
 - [Architecture](./docs/en/architecture.mdx), with diagrams generated from [`docs/architecture/`](./docs/architecture)

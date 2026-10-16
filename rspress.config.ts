@@ -5,6 +5,8 @@ import { defineConfig } from '@rspress/core';
 import { pluginGitDiff } from './dist/index.js';
 
 export default defineConfig({
+  // Published as a GitHub Pages project site.
+  base: '/rspress-plugin-git-diff/',
   root: path.join(import.meta.dirname, 'docs'),
   outDir: path.join(import.meta.dirname, 'doc_build'),
   title: 'rspress-plugin-git-diff',
