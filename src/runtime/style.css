@@ -239,6 +239,17 @@
   word-break: break-all;
 }
 
+/*
+ * diff2html sizes a line as `calc(100% - 16em)` with 8em of padding on each
+ * side, which leaves almost no room on a phone. The left padding keeps clear of
+ * the line numbers; the right one is not needed.
+ */
+.rp-git-diff-body .d2h-code-line,
+.rp-git-diff-body .d2h-code-side-line {
+  width: auto;
+  padding-right: 0.5em;
+}
+
 /* The bar shown while a change is marked on the page. */
 .rp-git-diff-bar {
   position: fixed;
@@ -412,4 +423,67 @@ tr.rp-git-diff-deleted td {
 /* Keep the last lines of the page above the bar. */
 body:has(.rp-git-diff-bar) .rp-doc-layout__doc {
   padding-bottom: 120px;
+}
+
+/* The history of a page */
+
+/* The element a portal renders into; it adds no box of its own. */
+.rp-git-diff-slot {
+  display: contents;
+}
+
+.rp-git-diff-history-link {
+  margin: 32px 0 0;
+  font-size: 0.9em;
+}
+
+.rp-git-diff-history-link a {
+  color: var(--rp-c-text-2);
+  text-decoration: underline;
+  text-decoration-color: var(--rp-c-divider);
+  text-underline-offset: 3px;
+}
+
+.rp-git-diff-history-link a:hover {
+  color: var(--rp-c-brand);
+}
+
+.rp-git-diff-history-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--rp-c-text-2);
+  border-radius: var(--rp-radius-small, 6px);
+}
+
+.rp-git-diff-history-button:hover {
+  color: var(--rp-c-text-1);
+  background: var(--rp-c-bg-mute, rgba(127, 127, 127, 0.12));
+}
+
+.rp-git-diff-drawer-overlay {
+  justify-content: flex-end;
+  align-items: stretch;
+  padding: 0;
+}
+
+.rp-git-diff-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(960px, 100%);
+  height: 100%;
+  background: var(--rp-c-bg);
+  color: var(--rp-c-text-1);
+  border-left: 1px solid var(--rp-c-divider-light);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.2);
+}
+
+.rp-git-diff-drawer-body {
+  /* The line numbers of diff2html are positioned; they scroll with the body. */
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
 }

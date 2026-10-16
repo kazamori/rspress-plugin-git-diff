@@ -18,6 +18,8 @@ export default defineConfig({
       // Small enough that the long change in the sample history is collapsed.
       maxDiffLines: 20,
       showAuthor: true,
+      // Both entries to the history of a page, to try them side by side.
+      pageHistory: { entries: ['footer', 'nav'] },
     }),
   ],
 });

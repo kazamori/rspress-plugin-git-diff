@@ -10,7 +10,12 @@ import { type GitDiffPluginOptions, type ResolvedOptions, resolveOptions } from 
 import { listScopes, type Scope, scopedRoutePath, scopeKey, type SiteLayout } from './scope';
 import { rehypeSourceLines, remarkCodeLines } from './sourceLines';
 
-export type { CommitMessageMode, GitDiffPluginOptions } from './options';
+export type {
+  CommitMessageMode,
+  GitDiffPluginOptions,
+  PageHistoryEntry,
+  PageHistoryOptions,
+} from './options';
 
 const PLUGIN_NAME = 'rspress-plugin-git-diff';
 
@@ -46,7 +51,21 @@ export function pluginGitDiff(userOptions: GitDiffPluginOptions = {}): RspressPl
 
   return {
     name: PLUGIN_NAME,
-    globalUIComponents: [path.join(runtimeDir, 'PageDiff.js')],
+    globalUIComponents: [
+      path.join(runtimeDir, 'PageDiff.js'),
+      ...(options.pageHistory
+        ? [
+            [
+              path.join(runtimeDir, 'PageHistory.js'),
+              {
+                entries: options.pageHistory.entries,
+                maxRevisions: options.maxPageRevisions,
+                maxDiffLines: options.maxDiffLines,
+              },
+            ] as [string, object],
+          ]
+        : []),
+    ],
     globalStyles: path.join(runtimeDir, 'style.css'),
     markdown: {
       remarkPlugins: [[remarkCodeLines, { pageRouteOf }]],
